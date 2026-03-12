@@ -1,7 +1,9 @@
 <?php
-$pageTitle = 'My Profile';
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/functions.php';
 require_login();
+$pageTitle = 'My Profile';
+require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/db.php';
 
 $pdo    = db();
 $user   = current_user();
@@ -83,4 +85,4 @@ $profile = $stmt->fetch();
   </div>
 </section>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

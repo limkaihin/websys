@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
 $pageTitle = 'Manage Products';
 require_once __DIR__ . '/../includes/header.php';
-require_admin();
+require_once __DIR__ . '/../includes/db.php';
+$pdo = db();
 $pdo = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
@@ -17,7 +20,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY category, name')->fetch
 <div style="display:flex;min-height:80vh;">
   <?php include __DIR__ . '/sidebar.php'; ?>
 
-  <main style="flex:1;padding:60px 48px;overflow-x:auto;">
+  <section style="flex:1;padding:60px 48px;overflow-x:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;">
       <h1 class="section-title">Products <em>Manager</em></h1>
       <a href="<?= h(base_url('admin/product_form.php')) ?>" class="btn-primary" style="text-decoration:none;">+ Add Product</a>
@@ -53,7 +56,7 @@ $products = $pdo->query('SELECT * FROM products ORDER BY category, name')->fetch
         <?php endforeach; ?>
       </tbody>
     </table>
-  </main>
+  </section>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

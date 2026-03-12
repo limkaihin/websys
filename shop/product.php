@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/includes/header.php';
-$pdo = db();
-
+require_once dirname(__DIR__) . '/includes/db.php';
 $id = (int)($_GET['id'] ?? 0);
+$pdo = db();
 $stmt = $pdo->prepare('SELECT * FROM products WHERE id = ?');
 $stmt->execute([$id]);
 $p = $stmt->fetch();
@@ -11,7 +10,9 @@ if (!$p) {
     set_flash('error', 'Product not found.');
     redirect('products.php');
 }
+
 $pageTitle = $p['name'];
+require_once dirname(__DIR__) . '/includes/header.php';
 $emojiMap  = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','accessories'=>'🎀'];
 $icon      = $emojiMap[strtolower($p['category'])] ?? '🐾';
 
@@ -22,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['cart'][$p['id']] = ['name'=>$p['name'], 'price'=>$p['price'], 'qty'=>0];
     }
     $_SESSION['cart'][$p['id']]['qty'] += $qty;
-    set_flash('success', h($p['name']) . ' added to cart!');
+    set_flash('success', $p['name'] . ' added to cart!');
     redirect('product.php?id=' . $p['id']);
 }
 ?>
@@ -32,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <p style="font-size:.82rem;color:var(--brown-md);margin-bottom:32px;">
     <a href="<?= h(base_url('index.php')) ?>" style="color:var(--brown-md);text-decoration:none;">Home</a>
     &rsaquo;
-    <a href="<?= h(base_url('products.php')) ?>" style="color:var(--brown-md);text-decoration:none;">Shop</a>
+    <a href="<?= h(base_url('shop/products.php')) ?>" style="color:var(--brown-md);text-decoration:none;">Shop</a>
     &rsaquo;
     <span style="color:var(--orange);"><?= h($p['name']) ?></span>
   </p>
@@ -84,4 +85,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

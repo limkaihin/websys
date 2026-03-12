@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/db.php';
+$pdo = db();
 $pdo = db();
 
 $id   = (int)($_GET['id'] ?? 0);
@@ -20,7 +22,7 @@ $icon       = $tagColors[$post['tag'] ?? ''] ?? '🐱';
   <p style="font-size:.82rem;color:var(--brown-md);margin-bottom:32px;">
     <a href="<?= h(base_url('index.php')) ?>" style="color:var(--brown-md);text-decoration:none;">Home</a>
     &rsaquo;
-    <a href="<?= h(base_url('blog.php')) ?>" style="color:var(--brown-md);text-decoration:none;">Blog</a>
+    <a href="<?= h(base_url('content/blog.php')) ?>" style="color:var(--brown-md);text-decoration:none;">Blog</a>
     &rsaquo;
     <span style="color:var(--orange);"><?= h($post['title']) ?></span>
   </p>
@@ -45,8 +47,8 @@ $icon       = $tagColors[$post['tag'] ?? ''] ?? '🐱';
   </div>
 
   <div style="margin-top:48px;padding-top:32px;border-top:1.5px solid var(--warm);">
-    <a href="<?= h(base_url('blog.php')) ?>" class="btn-outline" style="text-decoration:none;display:inline-block;">← Back to Blog</a>
+    <a href="<?= h(base_url('content/blog.php')) ?>" class="btn-outline" style="text-decoration:none;display:inline-block;">← Back to Blog</a>
   </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

@@ -1,6 +1,8 @@
 <?php
 $pageTitle = 'The MeowMart Blog';
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/db.php';
+$pdo   = db();
 $pdo   = db();
 $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetchAll();
 $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>'💊','Lifestyle'=>'🏠','Training'=>'🎯'];
@@ -29,7 +31,7 @@ $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>
             <div class="avatar">🧑</div>
             <?= h($post['author']) ?> &nbsp;·&nbsp;
             <?= date('d M Y', strtotime($post['created_at'])) ?>
-            <a href="<?= h(base_url('blog_post.php?id=' . $post['id'])) ?>"
+            <a href="<?= h(base_url('content/blog_post.php?id=' . $post['id'])) ?>"
                style="margin-left:auto;color:var(--orange);text-decoration:none;font-size:.78rem;font-weight:600;">
               Read more →
             </a>
@@ -41,4 +43,4 @@ $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>
   <?php endif; ?>
 </section>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

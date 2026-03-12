@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
 $pageTitle = 'Manage Blog Posts';
 require_once __DIR__ . '/../includes/header.php';
-require_admin();
+require_once __DIR__ . '/../includes/db.php';
+$pdo = db();
 $pdo = db();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
@@ -17,7 +20,7 @@ $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetch
 <div style="display:flex;min-height:80vh;">
   <?php include __DIR__ . '/sidebar.php'; ?>
 
-  <main style="flex:1;padding:60px 48px;overflow-x:auto;">
+  <section style="flex:1;padding:60px 48px;overflow-x:auto;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;">
       <h1 class="section-title">Blog <em>Posts</em></h1>
       <a href="<?= h(base_url('admin/blog_form.php')) ?>" class="btn-primary" style="text-decoration:none;">+ New Post</a>
@@ -53,7 +56,7 @@ $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetch
         <?php endforeach; ?>
       </tbody>
     </table>
-  </main>
+  </section>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

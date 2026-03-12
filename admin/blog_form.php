@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
 $pageTitle = 'Blog Post Form';
 require_once __DIR__ . '/../includes/header.php';
-require_admin();
+require_once __DIR__ . '/../includes/db.php';
+$pdo = db();
 $pdo = db();
 
 $id   = (int)($_GET['id'] ?? 0);
@@ -44,7 +47,7 @@ $tags = ['Nutrition','Play','Grooming','Health','Lifestyle','Training'];
 
 <div style="display:flex;min-height:80vh;">
   <?php include __DIR__ . '/sidebar.php'; ?>
-  <main style="flex:1;padding:60px 48px;">
+  <section style="flex:1;padding:60px 48px;">
     <h1 class="section-title" style="margin-bottom:32px;"><?= $id ? 'Edit' : 'New' ?> <em>Blog Post</em></h1>
 
     <div class="membership-right" style="max-width:640px;background:var(--white);border:1.5px solid var(--warm);">
@@ -89,7 +92,7 @@ $tags = ['Nutrition','Play','Grooming','Health','Lifestyle','Training'];
         </div>
       </form>
     </div>
-  </main>
+  </section>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

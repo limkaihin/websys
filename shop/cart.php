@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Your Cart';
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
@@ -34,7 +34,7 @@ $total = cart_total();
         <div style="font-size:6rem;margin-bottom:24px;">🛒</div>
         <h2 style="font-family:'Playfair Display',serif;margin-bottom:12px;">Your cart is empty</h2>
         <p style="color:var(--brown-md);margin-bottom:32px;">Looks like your cat hasn't picked anything yet!</p>
-        <a href="<?= h(base_url('products.php')) ?>" class="btn-primary" style="text-decoration:none;display:inline-block;">Browse Products →</a>
+        <a href="<?= h(base_url('shop/products.php')) ?>" class="btn-primary" style="text-decoration:none;display:inline-block;">Browse Products →</a>
       </div>
     <?php else: ?>
       <?php foreach ($cart as $pid => $row):
@@ -79,10 +79,10 @@ $total = cart_total();
           <span style="font-size:1.1rem;font-weight:600;">Total</span>
           <span style="font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--orange-lt);"><?= money($total) ?></span>
         </div>
-        <a href="<?= h(base_url('checkout.php')) ?>" class="btn-join" style="text-decoration:none;display:block;text-align:center;">Proceed to Checkout →</a>
+        <a href="<?= h(base_url('shop/checkout.php')) ?>" class="btn-join" style="text-decoration:none;display:block;text-align:center;">Proceed to Checkout →</a>
       </div>
     <?php endif; ?>
   </div>
 </section>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

@@ -3,6 +3,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if (!headers_sent()) {
+    ob_start();
+}
+if (!headers_sent() && ob_get_level() === 0) {
+    ob_start();
+}
+
 function config(): array {
     static $cfg = null;
     if ($cfg === null) {
@@ -22,7 +29,7 @@ function site_name(): string {
 function base_url(string $path = ''): string {
     $base = rtrim(config()['base_url'] ?? '', '/');
     $path = ltrim($path, '/');
-    return $base . '/' . $path;
+    return $path === '' ? ($base ?: '') : $base . '/' . $path;
 }
 
 function h(?string $v): string {
@@ -90,7 +97,7 @@ function is_admin(): bool {
 function require_login(): void {
     if (!is_logged_in()) {
         set_flash('error', 'Please log in to continue.');
-        redirect('login.php');
+        redirect('account/login.php');
     }
 }
 
@@ -116,4 +123,13 @@ function cart_total(): float {
         $total += (float)$row['price'] * (int)$row['qty'];
     }
     return $total;
+}
+
+function db_ready(): bool {
+    try {
+        db();
+        return true;
+    } catch (Throwable $e) {
+        return false;
+    }
 }

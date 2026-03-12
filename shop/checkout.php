@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Checkout';
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
 
 $cart  = $_SESSION['cart'] ?? [];
 $total = cart_total();
@@ -95,4 +95,4 @@ $user = current_user();
   </div>
 </section>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

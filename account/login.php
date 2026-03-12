@@ -1,8 +1,9 @@
 <?php
-$pageTitle = 'Log In';
-require_once __DIR__ . '/includes/header.php';
-
+require_once dirname(__DIR__) . '/includes/functions.php';
 if (is_logged_in()) redirect('index.php');
+$pageTitle = 'Log In';
+require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/db.php';
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -71,9 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="password" placeholder="Your password" required/>
       </div>
       <button class="btn-join" type="submit">Log In →</button>
-      <p class="form-note">Not a member yet? <a href="<?= h(base_url('register.php')) ?>" style="color:var(--blush);">Join MeowClub free →</a></p>
+      <p class="form-note">Not a member yet? <a href="<?= h(base_url('account/register.php')) ?>" style="color:var(--blush);">Join MeowClub free →</a></p>
     </form>
   </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

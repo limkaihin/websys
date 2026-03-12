@@ -1,6 +1,6 @@
 <?php
 $pageTitle = 'Contact Us';
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
 
 $errors  = [];
 $success = false;
@@ -96,4 +96,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 </section>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

@@ -1,6 +1,8 @@
 <?php
 $pageTitle = 'Shop All Products';
-require_once __DIR__ . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/db.php';
+$pdo = db();
 $pdo = db();
 
 $cat    = isset($_GET['cat']) ? trim($_GET['cat']) : '';
@@ -33,10 +35,10 @@ $emojiMap = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','a
       <h1 class="section-title">Shop <em>Everything</em></h1>
     </div>
     <div class="filter-pills">
-      <a class="pill <?= !$cat ? 'active' : '' ?>" href="<?= h(base_url('products.php')) ?>">All</a>
+      <a class="pill <?= !$cat ? 'active' : '' ?>" href="<?= h(base_url('shop/products.php')) ?>">All</a>
       <?php foreach ($categories as $c): ?>
         <a class="pill <?= $cat === $c['slug'] ? 'active' : '' ?>"
-           href="<?= h(base_url('products.php?cat=' . $c['slug'])) ?>"
+           href="<?= h(base_url('shop/products.php?cat=' . $c['slug'])) ?>"
            style="text-decoration:none;">
           <?= $c['icon'] . ' ' . h($c['label']) ?>
         </a>
@@ -46,7 +48,7 @@ $emojiMap = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','a
 
   <?php if (empty($products)): ?>
     <p style="text-align:center;padding:60px;color:var(--brown-md);font-size:1.1rem;">
-      No products found. <a href="<?= h(base_url('products.php')) ?>" style="color:var(--orange);">Browse all →</a>
+      No products found. <a href="<?= h(base_url('shop/products.php')) ?>" style="color:var(--orange);">Browse all →</a>
     </p>
   <?php else: ?>
   <div class="products-grid">
@@ -65,7 +67,7 @@ $emojiMap = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','a
           <div class="product-stars">⭐⭐⭐⭐⭐ <span class="count">(<?= rand(50,500) ?>)</span></div>
           <div class="product-footer">
             <div class="product-price"><?= money((float)$p['price']) ?></div>
-            <a href="<?= h(base_url('product.php?id=' . $p['id'])) ?>"
+            <a href="<?= h(base_url('shop/product.php?id=' . $p['id'])) ?>"
                class="btn-cart" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">🛒</a>
           </div>
         </div>
@@ -75,4 +77,4 @@ $emojiMap = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','a
   <?php endif; ?>
 </section>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>

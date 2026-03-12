@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
 $pageTitle = 'Admin Dashboard';
 require_once __DIR__ . '/../includes/header.php';
-require_admin();
+require_once __DIR__ . '/../includes/db.php';
+$pdo      = db();
 $pdo      = db();
 $products = (int)$pdo->query('SELECT COUNT(*) FROM products')->fetchColumn();
 $posts    = (int)$pdo->query('SELECT COUNT(*) FROM blog_posts')->fetchColumn();
@@ -11,7 +14,7 @@ $users    = (int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
 <div style="display:flex;min-height:80vh;">
   <?php include __DIR__ . '/sidebar.php'; ?>
 
-  <main style="flex:1;padding:60px 48px;">
+  <section style="flex:1;padding:60px 48px;">
     <div class="section-tag" style="margin-bottom:12px;">⚙️ Admin Panel</div>
     <h1 class="section-title" style="margin-bottom:40px;">Dashboard <em>Overview</em></h1>
 
@@ -37,7 +40,7 @@ $users    = (int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
       <a href="<?= h(base_url('admin/product_form.php')) ?>"  class="btn-primary"  style="text-decoration:none;">+ Add Product</a>
       <a href="<?= h(base_url('admin/blog_form.php')) ?>"     class="btn-outline"  style="text-decoration:none;">+ Add Blog Post</a>
     </div>
-  </main>
+  </section>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

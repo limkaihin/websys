@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/../includes/functions.php';
+require_admin();
 $pageTitle = 'Product Form';
 require_once __DIR__ . '/../includes/header.php';
-require_admin();
+require_once __DIR__ . '/../includes/db.php';
+$pdo = db();
 $pdo = db();
 
 $id = (int)($_GET['id'] ?? 0);
@@ -40,7 +43,7 @@ $cats = ['Food','Litter','Toys','Accessories','Apparel'];
 
 <div style="display:flex;min-height:80vh;">
   <?php include __DIR__ . '/sidebar.php'; ?>
-  <main style="flex:1;padding:60px 48px;">
+  <section style="flex:1;padding:60px 48px;">
     <h1 class="section-title" style="margin-bottom:32px;"><?= $id ? 'Edit' : 'Add' ?> <em>Product</em></h1>
 
     <div class="membership-right" style="max-width:580px;background:var(--white);border:1.5px solid var(--warm);">
@@ -83,7 +86,7 @@ $cats = ['Food','Litter','Toys','Accessories','Apparel'];
         </div>
       </form>
     </div>
-  </main>
+  </section>
 </div>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>

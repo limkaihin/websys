@@ -1,8 +1,9 @@
 <?php
-$pageTitle = 'Join MeowClub';
-require_once __DIR__ . '/includes/header.php';
-
+require_once dirname(__DIR__) . '/includes/functions.php';
 if (is_logged_in()) redirect('index.php');
+$pageTitle = 'Join MeowClub';
+require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/db.php';
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ->execute([$name, $email, $cat_name, password_hash($password, PASSWORD_BCRYPT), 'member']);
             set_flash('success', 'Welcome to MeowClub, ' . $name . '! Please log in.');
             clear_old();
-            redirect('login.php');
+            redirect('account/login.php');
         }
     }
     store_old(compact('name','email','cat_name'));
@@ -76,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($errors['confirm'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:4px;"><?= h($errors['confirm']) ?></p><?php endif; ?>
       </div>
       <button class="btn-join" type="submit">Join MeowClub – It's Free!</button>
-      <p class="form-note">Already a member? <a href="<?= h(base_url('login.php')) ?>" style="color:var(--blush);">Log in →</a></p>
+      <p class="form-note">Already a member? <a href="<?= h(base_url('account/login.php')) ?>" style="color:var(--blush);">Log in →</a></p>
     </form>
   </div>
 </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>
