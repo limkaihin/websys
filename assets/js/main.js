@@ -40,3 +40,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+/* ── Mobile nav hamburger ── */
+(function () {
+  const btn  = document.getElementById('navToggle');
+  const menu = document.getElementById('navMenu');
+  if (!btn || !menu) return;
+
+  btn.addEventListener('click', function () {
+    const expanded = this.getAttribute('aria-expanded') === 'true';
+    this.setAttribute('aria-expanded', String(!expanded));
+    menu.classList.toggle('open');
+  });
+
+  // Close menu when a link is clicked
+  menu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      btn.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('open');
+    });
+  });
+})();

@@ -113,6 +113,35 @@ function money(float $amount): string {
     return '$' . number_format($amount, 2);
 }
 
+
+function wishlist_items(): array {
+    if (!isset($_SESSION['wishlist']) || !is_array($_SESSION['wishlist'])) {
+        $_SESSION['wishlist'] = [];
+    }
+    return $_SESSION['wishlist'];
+}
+
+function wishlist_has(int $productId): bool {
+    return in_array($productId, wishlist_items(), true);
+}
+
+function wishlist_toggle(int $productId): bool {
+    $items = wishlist_items();
+    $key = array_search($productId, $items, true);
+    if ($key !== false) {
+        unset($items[$key]);
+        $_SESSION['wishlist'] = array_values($items);
+        return false;
+    }
+    $items[] = $productId;
+    $_SESSION['wishlist'] = array_values(array_unique(array_map('intval', $items)));
+    return true;
+}
+
+function wishlist_count(): int {
+    return count(wishlist_items());
+}
+
 function cart_count(): int {
     return array_sum(array_column($_SESSION['cart'] ?? [], 'qty'));
 }

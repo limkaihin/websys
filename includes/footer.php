@@ -41,7 +41,7 @@
     <div class="footer-col">
       <h4>Help</h4>
       <ul>
-        <li><a href="#">Track My Order</a></li>
+        <li><a href="<?= h(base_url('shop/orders.php')) ?>">Track My Order</a></li>
         <li><a href="#">Returns & Refunds</a></li>
         <li><a href="#">Shipping Info</a></li>
         <li><a href="#">FAQ</a></li>

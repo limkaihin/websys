@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
 $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetchAll();
 ?>
 
-<div style="display:flex;min-height:80vh;">
+<div style="display:flex;min-height:80vh;flex-wrap:wrap;">
   <?php include __DIR__ . '/sidebar.php'; ?>
 
   <section style="flex:1;padding:60px 48px;overflow-x:auto;">

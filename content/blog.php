@@ -2,8 +2,7 @@
 $pageTitle = 'The MeowMart Blog';
 require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
-$pdo   = db();
-$pdo   = db();
+$pdo = db();
 $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetchAll();
 $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>'💊','Lifestyle'=>'🏠','Training'=>'🎯'];
 ?>
@@ -21,7 +20,7 @@ $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>
     <?php foreach ($posts as $i => $post):
       $icon = $tagColors[$post['tag'] ?? ''] ?? '🐱';
     ?>
-      <div class="blog-card <?= $i === 0 ? 'featured' : '' ?>">
+      <article class="blog-card <?= $i === 0 ? 'featured' : '' ?>"><a href="<?= h(base_url('content/blog_post.php?id=' . $post['id'])) ?>" style="text-decoration:none;color:inherit;display:block;">
         <div class="blog-thumb"><?= $icon ?></div>
         <div class="blog-body">
           <span class="blog-tag"><?= h($post['tag'] ?? 'General') ?></span>
@@ -37,7 +36,7 @@ $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>
             </a>
           </div>
         </div>
-      </div>
+      </a></article>
     <?php endforeach; ?>
   </div>
   <?php endif; ?>

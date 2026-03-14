@@ -1,7 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
-$pdo = db();
 $pdo = db();
 
 $id   = (int)($_GET['id'] ?? 0);
@@ -11,9 +9,10 @@ $post = $stmt->fetch();
 
 if (!$post) {
     set_flash('error', 'Post not found.');
-    redirect('blog.php');
+    redirect('content/blog.php');
 }
 $pageTitle  = $post['title'];
+require_once dirname(__DIR__) . '/includes/header.php';
 $tagColors  = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>'💊','Lifestyle'=>'🏠','Training'=>'🎯'];
 $icon       = $tagColors[$post['tag'] ?? ''] ?? '🐱';
 ?>

@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (strlen($name) < 2)                             $errors['name']     = 'Name must be at least 2 characters.';
     if (!filter_var($email, FILTER_VALIDATE_EMAIL))    $errors['email']    = 'Please enter a valid email.';
-    if (strlen($password) < 6)                         $errors['password'] = 'Password must be at least 6 characters.';
+    if (strlen($password) < 8)                         $errors['password'] = 'Password must be at least 8 characters.';
     if ($password !== $confirm)                        $errors['confirm']  = 'Passwords do not match.';
 
     if (empty($errors)) {
@@ -53,13 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <form method="POST">
       <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
       <div class="form-field">
-        <label>Your Name</label>
-        <input type="text" name="name" value="<?= old('name') ?>" placeholder="e.g. Sarah Tan" required/>
+        <label for="reg-name">Your Name</label>
+        <input type="text" id="reg-name" name="name" value="<?= old('name') ?>" placeholder="e.g. Sarah Tan" required/>
         <?php if (!empty($errors['name'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:4px;"><?= h($errors['name']) ?></p><?php endif; ?>
       </div>
       <div class="form-field">
-        <label>Email Address</label>
-        <input type="email" name="email" value="<?= old('email') ?>" placeholder="you@example.com" required/>
+        <label for="reg-email">Email Address</label>
+        <input type="email" id="reg-email" name="email" value="<?= old('email') ?>" placeholder="you@example.com" required/>
         <?php if (!empty($errors['email'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:4px;"><?= h($errors['email']) ?></p><?php endif; ?>
       </div>
       <div class="form-field">
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
       <div class="form-field">
         <label>Password</label>
-        <input type="password" name="password" placeholder="At least 6 characters" required/>
+        <input type="password" name="password" placeholder="At least 8 characters" minlength="8" required/>
         <?php if (!empty($errors['password'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:4px;"><?= h($errors['password']) ?></p><?php endif; ?>
       </div>
       <div class="form-field">

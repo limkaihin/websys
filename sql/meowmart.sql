@@ -40,13 +40,51 @@ CREATE TABLE blog_posts (
     created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ─── ORDERS ──────────────────────────────────────────────────────────────────
+CREATE TABLE orders (
+    id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
+    user_id    INT UNSIGNED   DEFAULT NULL,
+    name       VARCHAR(120)   NOT NULL,
+    email      VARCHAR(180)   NOT NULL,
+    address    TEXT           NOT NULL,
+    payment    VARCHAR(30)    NOT NULL DEFAULT 'card',
+    total      DECIMAL(10,2)  NOT NULL,
+    status     ENUM('confirmed','shipped','delivered','cancelled') NOT NULL DEFAULT 'confirmed',
+    created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+-- ─── ORDER ITEMS ─────────────────────────────────────────────────────────────
+CREATE TABLE order_items (
+    id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
+    order_id   INT UNSIGNED   NOT NULL,
+    product_id INT UNSIGNED   DEFAULT NULL,
+    name       VARCHAR(200)   NOT NULL,
+    price      DECIMAL(8,2)   NOT NULL,
+    qty        INT UNSIGNED   NOT NULL DEFAULT 1,
+    FOREIGN KEY (order_id)   REFERENCES orders(id)   ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+);
+
+-- ─── CONTACT MESSAGES ────────────────────────────────────────────────────────
+CREATE TABLE contact_messages (
+    id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
+    name       VARCHAR(120)   NOT NULL,
+    email      VARCHAR(180)   NOT NULL,
+    subject    VARCHAR(255)   NOT NULL,
+    message    TEXT           NOT NULL,
+    is_read    TINYINT(1)     NOT NULL DEFAULT 0,
+    created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ─── DEMO USERS ──────────────────────────────────────────────────────────────
--- Password: Admin123!
+-- Password for both: Admin123! and User123! (bcrypt hash of "password" for demo)
+-- Admin password: Admin123!
 INSERT INTO users (name, email, cat_name, password, role) VALUES
 ('MeowMart Admin', 'admin@meowmart.test', 'Whiskers',
  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
 
--- Password: User123!
+-- Member password: User123!
 INSERT INTO users (name, email, cat_name, password, role) VALUES
 ('Sarah Tan', 'member@meowmart.test', 'Mochi',
  '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'member');

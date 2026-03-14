@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['cart'][$pid]['qty'] = $qty;
         }
     }
-    redirect('cart.php');
+    redirect('shop/cart.php');
 }
 
 $cart  = $_SESSION['cart'] ?? [];

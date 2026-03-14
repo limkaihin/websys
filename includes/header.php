@@ -28,9 +28,10 @@ $pageTitle = $pageTitle ?? site_name();
 </div>
 <?php endif; ?>
 
-<div class="announcement text-center" role="note">
-  🎉 Free shipping on orders above <span>$60</span> · New arrivals every Friday · Use code <span>MEOW10</span> for 10% off
+<div class="site-header">
+  <div class="announcement text-center" role="note">
+    🎉 Free shipping on orders above <span>$60</span> · New arrivals every Friday · Use code <span>MEOW10</span> for 10% off
+  </div>
+  <?php include __DIR__ . '/navbar.php'; ?>
 </div>
-
-<?php include __DIR__ . '/navbar.php'; ?>
 <main id="main-content">
