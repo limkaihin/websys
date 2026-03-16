@@ -1,7 +1,11 @@
-<?php
-$pageTitle = 'Home';
-require_once __DIR__ . '/includes/header.php';
-?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <?php include "inc/head.inc.php"; ?>
+</head>
+<body>
+
+<?php include "inc/nav.inc.php"; ?>
 
   <!-- HERO -->
   <section class="hero">
@@ -355,4 +359,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
   </div>
 
-<?php require_once __DIR__ . '/includes/footer.php'; ?>
+<?php include "inc/footer.inc.php"; ?>
+</body>
+</html>
