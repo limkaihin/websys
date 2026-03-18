@@ -16,10 +16,10 @@
       <div class="footer-col">
         <h4>Shop</h4>
         <ul>
-          <li><a href="/shop/products.php?cat=food">Cat Food</a></li>
-          <li><a href="/shop/products.php?cat=litter">Litter & Hygiene</a></li>
-          <li><a href="/shop/products.php?cat=toys">Toys & Play</a></li>
-          <li><a href="/shop/products.php?cat=apparel">Cat Apparel</a></li>
+          <li><a href="/shop/category.php?slug=food">Cat Food</a></li>
+          <li><a href="/shop/category.php?slug=litter">Litter & Hygiene</a></li>
+          <li><a href="/shop/category.php?slug=toys">Toys & Play</a></li>
+          <li><a href="/shop/category.php?slug=apparel">Cat Apparel</a></li>
           <li><a href="/shop/products.php">New Arrivals</a></li>
         </ul>
       </div>
@@ -28,8 +28,8 @@
         <ul>
           <li><a href="/account/register.php">Join Free</a></li>
           <li><a href="/about.php">How It Works</a></li>
-          <li><a href="#">Pawpoints</a></li>
-          <li><a href="#">Member Deals</a></li>
+          <li><a href="/blog/index.php">Cat Blog</a></li>
+          <li><a href="/shop/categories.php">All Categories</a></li>
         </ul>
       </div>
       <div class="footer-col">

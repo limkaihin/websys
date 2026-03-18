@@ -728,5 +728,3 @@
       .blog-card.featured { grid-column: span 1; }
     }
   
-
-.skip-link{position:absolute;left:-9999px;top:0;background:#111;color:#fff;padding:10px 14px;z-index:20000;border-radius:0 0 8px 8px;text-decoration:none}.skip-link:focus{left:12px;top:12px}.navbar-shell{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px 5%;background:var(--cream);position:sticky;top:0;z-index:999}.nav-links{display:flex;align-items:center;gap:24px}.nav-links li{margin:0}.nav-links a{display:inline-block}.nav-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}@media (max-width: 900px){.navbar-shell{flex-wrap:wrap}.nav-links{order:3;width:100%;justify-content:center;flex-wrap:wrap}}main{display:block}.form-field input,.form-field select,.form-field textarea{width:100%}.table-responsive{overflow-x:auto}

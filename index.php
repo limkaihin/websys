@@ -46,23 +46,24 @@
       <div class="section-tag">🐾 Browse by Category</div>
       <h2 class="section-title">Shop by <em>Your Cat's</em> Mood</h2>
     </div>
-    <div class="cat-grid">
-      <div class="cat-card">
+        <div class="cat-grid">
+      <a href="/shop/category.php?slug=food" style="text-decoration:none;color:inherit;"><div class="cat-card">
         <div class="bg">🥩</div>
-        <div class="info"><h3>Cat Food</h3><span>340+ products</span></div>
-      </div>
-      <div class="cat-card">
+        <div class="info"><h3>Cat Food</h3><span>3 products</span></div>
+      </div></a>
+      <a href="/shop/category.php?slug=litter" style="text-decoration:none;color:inherit;"><div class="cat-card">
         <div class="bg">🧴</div>
-        <div class="info"><h3>Litter & Hygiene</h3><span>120+ products</span></div>
-      </div>
-      <div class="cat-card">
+        <div class="info"><h3>Litter & Hygiene</h3><span>3 products</span></div>
+      </div></a>
+      <a href="/shop/category.php?slug=toys" style="text-decoration:none;color:inherit;"><div class="cat-card">
         <div class="bg">🧶</div>
-        <div class="info"><h3>Toys & Play</h3><span>200+ products</span></div>
-      </div>
-      <div class="cat-card">
+        <div class="info"><h3>Toys & Play</h3><span>3 products</span></div>
+      </div></a>
+      <a href="/shop/category.php?slug=apparel" style="text-decoration:none;color:inherit;"><div class="cat-card">
         <div class="bg">👗</div>
-        <div class="info"><h3>Cat Apparel</h3><span>80+ products</span></div>
-      </div>
+        <div class="info"><h3>Cat Apparel</h3><span>3 products</span></div>
+      </div></a>
+    </div>
     </div>
   </section>
 
@@ -87,7 +88,6 @@
         <div class="product-img">
           <span>🥩</span>
           <div class="ribbon">Best Seller</div>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">PurreFit</div>
@@ -103,7 +103,6 @@
       <div class="product-card">
         <div class="product-img" style="background:#E8F2EA;">
           <span>🧴</span>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">ClearPaw</div>
@@ -120,7 +119,6 @@
         <div class="product-img" style="background:#E8E0F0;">
           <span>🧶</span>
           <div class="ribbon">New</div>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">PlayPaws</div>
@@ -136,7 +134,6 @@
       <div class="product-card">
         <div class="product-img" style="background:#F4E8F0;">
           <span>👗</span>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">KittyKouture</div>
@@ -153,7 +150,6 @@
         <div class="product-img" style="background:#FFF4E0;">
           <span>🍗</span>
           <div class="ribbon">Sale</div>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">PurreFit</div>
@@ -169,7 +165,6 @@
       <div class="product-card">
         <div class="product-img" style="background:#E0F0EA;">
           <span>🏠</span>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">CozyCat</div>
@@ -186,7 +181,6 @@
         <div class="product-img" style="background:#E8EEF8;">
           <span>🎯</span>
           <div class="ribbon">New</div>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">PlayPaws</div>
@@ -202,7 +196,6 @@
       <div class="product-card">
         <div class="product-img" style="background:#FDE8DC;">
           <span>🎀</span>
-          <button class="wishlist">🤍</button>
         </div>
         <div class="product-body">
           <div class="product-brand">KittyKouture</div>
@@ -256,7 +249,7 @@
         <label>Your Cat's Name 🐱</label>
         <input type="text" placeholder="e.g. Mochi" />
       </div>
-      <button class="btn-join">Join MeowClub – It's Free!</button>
+      <a href="/account/register.php" class="btn-join" style="display:block;text-align:center;text-decoration:none;padding:16px;">Join MeowClub – It's Free!</a>
       <p class="form-note">No credit card needed. Unsubscribe anytime.</p>
     </div>
   </div>
@@ -355,7 +348,7 @@
         <span>Subtotal</span>
         <span class="val" id="cartTotal">$34.70</span>
       </div>
-      <button class="btn-join">Proceed to Checkout →</button>
+      <a href="/shop/cart.php" class="btn-join" style="display:block;text-align:center;text-decoration:none;padding:16px;">Proceed to Checkout →</a>
     </div>
   </div>
 
