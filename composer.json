@@ -1,0 +1,15 @@
+{
+    "name": "meowmart/meowmart",
+    "description": "MeowMart - Cat Products E-Commerce Site",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.9",
+        "stefangabos/zebra_session": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "MeowMart\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

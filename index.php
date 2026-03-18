@@ -131,7 +131,7 @@ function stable_rating_home(int $id): array {
                     style="position:absolute;top:12px;right:12px;z-index:2;"
                     aria-label="<?= wishlist_has((int)$p['id']) ? 'Remove from wishlist' : 'Add to wishlist' ?>"
                     onclick="event.preventDefault();this.closest('form').submit();">
-              <?= wishlist_has((int)$p['id']) ? '❤️' : '🤍' ?>
+              <i class="fa-<?= wishlist_has((int)$p['id']) ? 'solid' : 'regular' ?> fa-heart"></i>
             </button>
           </div>
           <div class="product-body">
@@ -142,7 +142,7 @@ function stable_rating_home(int $id): array {
             </div>
             <div class="product-footer">
               <div class="product-price"><?= money((float)$p['price']) ?></div>
-              <span class="btn-cart" role="img" aria-label="View product">🛒</span>
+              <span class="btn-cart" aria-hidden="true"><i class="fa-solid fa-cart-shopping"></i></span>
             </div>
           </div>
         </a>
@@ -232,7 +232,7 @@ function stable_rating_home(int $id): array {
           <span class="blog-tag"><?= h($post['tag'] ?? 'Article') ?></span>
           <h3><?= h($post['title']) ?></h3>
           <?php if ($post['excerpt']): ?>
-            <p><?= h(mb_strimwidth($post['excerpt'], 0, $isFeatured ? 160 : 100, '…')) ?></p>
+            <p><?= h(strlen($post['excerpt']) > ($isFeatured ? 160 : 100) ? substr($post['excerpt'], 0, $isFeatured ? 160 : 100) . '...' : $post['excerpt']) ?></p>
           <?php endif; ?>
           <div class="blog-meta">
             <div class="avatar" aria-hidden="true">🧑</div>

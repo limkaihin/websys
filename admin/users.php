@@ -6,9 +6,19 @@ require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
 $pdo   = db();
-$users = $pdo->query('SELECT u.*, COUNT(o.id) AS order_count FROM users u
-    LEFT JOIN orders o ON o.user_id = u.id
-    GROUP BY u.id ORDER BY u.created_at DESC')->fetchAll();
+$users = [];
+try {
+    $users = $pdo->query('SELECT u.*, COUNT(o.id) AS order_count FROM users u
+        LEFT JOIN orders o ON o.user_id = u.id
+        GROUP BY u.id ORDER BY u.created_at DESC')->fetchAll();
+} catch (PDOException $e) {
+    if (strpos($e->getMessage(), '1146') !== false) {
+        // Orders table not yet migrated — show users without order count
+        $users = $pdo->query('SELECT *, 0 AS order_count FROM users ORDER BY created_at DESC')->fetchAll();
+    } else {
+        throw $e;
+    }
+}
 ?>
 
 <?php include __DIR__ . '/sidebar.php'; ?>

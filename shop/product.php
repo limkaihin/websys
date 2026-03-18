@@ -97,7 +97,7 @@ $related = $relStmt->fetchAll();
           <button class="wishlist <?= wishlist_has((int)$p['id']) ? 'active' : '' ?>" type="submit"
                   aria-label="<?= wishlist_has((int)$p['id']) ? 'Remove from wishlist' : 'Add to wishlist' ?>"
                   style="position:static;font-size:1.5rem;width:46px;height:46px;">
-            <?= wishlist_has((int)$p['id']) ? '❤️' : '🤍' ?>
+            <i class="fa-<?= wishlist_has((int)$p['id']) ? 'solid' : 'regular' ?> fa-heart"></i>
           </button>
         </form>
       </div>

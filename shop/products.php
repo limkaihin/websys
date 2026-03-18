@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Shop All Products';
-require_once dirname(__DIR__) . '/includes/header.php';
 
 $pdo    = db();
 $cat    = trim($_GET['cat']  ?? '');
@@ -58,6 +57,9 @@ $emojiMap = ['food' => '🥩', 'litter' => '🧴', 'toys' => '🧶', 'apparel' =
 
 // Build return_to for wishlist redirects
 $returnTo = 'shop/products.php?' . http_build_query(['cat' => $cat, 'q' => $search, 'sort' => $sort]);
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once dirname(__DIR__) . '/includes/header.php';
+
 ?>
 
 <section class="products" style="min-height:70vh;">
@@ -141,7 +143,7 @@ $returnTo = 'shop/products.php?' . http_build_query(['cat' => $cat, 'q' => $sear
                 <input type="hidden" name="return_to"   value="<?= h($returnTo) ?>">
                 <button class="wishlist <?= wishlist_has((int)$p['id']) ? 'active' : '' ?>" type="submit"
                         aria-label="<?= wishlist_has((int)$p['id']) ? 'Remove from wishlist' : 'Add to wishlist' ?>">
-                  <?= wishlist_has((int)$p['id']) ? '❤️' : '🤍' ?>
+                  <i class="fa-<?= wishlist_has((int)$p['id']) ? 'solid' : 'regular' ?> fa-heart"></i>
                 </button>
               </form>
             </div>
@@ -155,7 +157,7 @@ $returnTo = 'shop/products.php?' . http_build_query(['cat' => $cat, 'q' => $sear
               </div>
               <div class="product-footer">
                 <div class="product-price"><?= money((float)$p['price']) ?></div>
-                <span class="btn-cart" role="img" aria-hidden="true">🛒</span>
+                <span class="btn-cart" aria-hidden="true"><i class="fa-solid fa-cart-shopping"></i></span>
               </div>
             </div>
           </a>

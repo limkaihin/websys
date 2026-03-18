@@ -2,7 +2,6 @@
 $pageTitle = 'Contact Messages';
 require_once dirname(__DIR__) . '/includes/functions.php';
 require_admin();
-require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
 $pdo = db();
@@ -12,13 +11,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
     $mid = (int)post('message_id');
     if ($mid > 0) {
-        $pdo->prepare('UPDATE contact_messages SET is_read = 1 WHERE id = ?')->execute([$mid]);
+        try {
+            $pdo->prepare('UPDATE contact_messages SET is_read = 1 WHERE id = ?')->execute([$mid]);
+        } catch (PDOException $e) {
+            if (strpos($e->getMessage(), '1146') === false) throw $e;
+        }
     }
     redirect('admin/messages.php');
 }
 
-$messages  = $pdo->query('SELECT * FROM contact_messages ORDER BY created_at DESC')->fetchAll();
-$unread    = array_filter($messages, fn($m) => !$m['is_read']);
+$messages = [];
+try {
+    $messages = $pdo->query('SELECT * FROM contact_messages ORDER BY created_at DESC')->fetchAll();
+} catch (PDOException $e) {
+    if (strpos($e->getMessage(), '1146') === false) throw $e;
+}
+$unread    = array_filter($messages, function($m) { return !$m['is_read']; });
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once dirname(__DIR__) . '/includes/header.php';
+
 ?>
 
 <?php include __DIR__ . '/sidebar.php'; ?>

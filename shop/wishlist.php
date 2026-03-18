@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Your Wishlist';
-require_once dirname(__DIR__) . '/includes/header.php';
 
 $ids = wishlist_items();
 $products = [];
@@ -22,6 +21,9 @@ if (!empty($ids)) {
     $products = $stmt->fetchAll();
 }
 $emojiMap = ['food' => '🥩', 'litter' => '🧴', 'toys' => '🧶', 'apparel' => '👗', 'accessories' => '🎀'];
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once dirname(__DIR__) . '/includes/header.php';
+
 ?>
 
 <section class="products" style="min-height:70vh;">

@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 $pageTitle = 'Product Form';
-require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/db.php';
 $pdo = db();
 $pdo = db();
@@ -39,6 +38,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     store_old(compact('name','category','price','description'));
 }
 $cats = ['Food','Litter','Toys','Accessories','Apparel'];
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once __DIR__ . '/../includes/header.php';
+
 ?>
 
 <div style="display:flex;min-height:80vh;">

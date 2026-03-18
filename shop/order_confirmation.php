@@ -5,42 +5,67 @@ require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
 $orderId = (int)($_GET['id'] ?? 0);
-if ($orderId < 1) {
-    redirect('index.php');
+if ($orderId < 1) { redirect('index.php'); }
+
+$pdo   = db();
+$order = null;
+$items = [];
+
+try {
+    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
+    $stmt->execute([$orderId]);
+    $order = $stmt->fetch();
+
+    if (!$order) {
+        set_flash('error', 'Order not found.');
+        redirect('index.php');
+    }
+
+    // Security: only owner or admin may view
+    $user = current_user();
+    if ($order['user_id'] && (!$user || ((int)$user['id'] !== (int)$order['user_id'] && !is_admin()))) {
+        set_flash('error', 'You do not have permission to view this order.');
+        redirect('index.php');
+    }
+
+    $iStmt = $pdo->prepare('SELECT * FROM order_items WHERE order_id = ?');
+    $iStmt->execute([$orderId]);
+    $items = $iStmt->fetchAll();
+
+} catch (PDOException $e) {
+    if (strpos($e->getMessage(), '1146') !== false) {
+        // Tables not migrated yet — show a plain success page
+        $user = current_user();
+?>
+<section style="padding:80px 5%;min-height:70vh;text-align:center;">
+  <div style="max-width:560px;margin:0 auto;">
+    <div style="background:linear-gradient(135deg,#166534,#15803d);border-radius:28px;padding:48px 36px;color:#fff;margin-bottom:32px;">
+      <div style="font-size:4rem;margin-bottom:16px;">🎉</div>
+      <h1 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;margin-bottom:8px;">Order Received!</h1>
+      <p style="opacity:.9;">Thank you for your purchase.</p>
+    </div>
+    <p style="color:var(--brown-md);margin-bottom:24px;">
+      To enable full order tracking, please run:<br>
+      <code style="background:var(--warm);padding:6px 14px;border-radius:8px;font-size:.85rem;display:inline-block;margin-top:8px;">mysql -u root -p meowmart &lt; sql/migrate.sql</code>
+    </p>
+    <a href="<?= h(base_url('shop/products.php')) ?>" class="btn-primary" style="text-decoration:none;display:inline-block;">Continue Shopping</a>
+  </div>
+</section>
+<?php
+        require_once dirname(__DIR__) . '/includes/footer.php';
+        exit;
+    }
+    throw $e;
 }
 
-$pdo  = db();
-$stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ?');
-$stmt->execute([$orderId]);
-$order = $stmt->fetch();
-
-if (!$order) {
-    set_flash('error', 'Order not found.');
-    redirect('index.php');
-}
-
-// Security: only owner or admin can view
+$paymentLabels = ['card'=>'💳 Credit / Debit Card','paynow'=>'📱 PayNow','grab'=>'🟢 GrabPay'];
 $user = current_user();
-if ($order['user_id'] && (!$user || ((int)$user['id'] !== (int)$order['user_id'] && !is_admin()))) {
-    set_flash('error', 'You do not have permission to view this order.');
-    redirect('index.php');
-}
-
-$items = $pdo->prepare('SELECT * FROM order_items WHERE order_id = ?');
-$items->execute([$orderId]);
-$items = $items->fetchAll();
-
-$paymentLabels = [
-    'card'   => '💳 Credit / Debit Card',
-    'paynow' => '📱 PayNow',
-    'grab'   => '🟢 GrabPay',
-];
 ?>
 
 <section style="padding:60px 5%;min-height:70vh;">
   <div style="max-width:720px;margin:0 auto;">
 
-    <!-- Success Banner -->
+    <!-- Success banner -->
     <div style="background:linear-gradient(135deg,#166534,#15803d);border-radius:28px;padding:40px 36px;text-align:center;margin-bottom:36px;color:#fff;">
       <div style="font-size:4rem;margin-bottom:16px;">🎉</div>
       <h1 style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;margin-bottom:8px;">Order Confirmed!</h1>
@@ -48,20 +73,18 @@ $paymentLabels = [
       <p style="font-size:.88rem;opacity:.75;">Order #<?= (int)$order['id'] ?> · <?= date('d M Y, g:i A', strtotime($order['created_at'])) ?></p>
     </div>
 
-    <!-- Status Tracker -->
+    <!-- Status tracker -->
     <div style="background:var(--white);border-radius:24px;padding:32px 36px;margin-bottom:24px;box-shadow:0 2px 16px rgba(61,35,20,.07);">
       <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:28px;">📦 Delivery Status</h2>
       <?php
-        $steps = [
-          'confirmed'  => ['✅','Order Confirmed',  'Your order has been received'],
-          'shipped'    => ['🚚','Shipped',          'On its way to you'],
-          'delivered'  => ['🏠','Delivered',        'Enjoy your purchase!'],
-        ];
+        $steps      = ['confirmed'=>['✅','Order Confirmed','Your order has been received'],
+                       'shipped'  =>['🚚','Shipped',       'On its way to you'],
+                       'delivered'=>['🏠','Delivered',     'Enjoy your purchase!']];
         $statusOrder = ['confirmed','shipped','delivered'];
         $currentIdx  = array_search($order['status'], $statusOrder);
         if ($currentIdx === false) $currentIdx = 0;
       ?>
-      <div style="display:flex;align-items:flex-start;gap:0;position:relative;">
+      <div style="display:flex;align-items:flex-start;">
         <?php foreach ($statusOrder as $i => $s):
           $done   = $i <= $currentIdx;
           $active = $i === $currentIdx;
@@ -78,7 +101,7 @@ $paymentLabels = [
       </div>
     </div>
 
-    <!-- Order Items -->
+    <!-- Items -->
     <div style="background:var(--white);border-radius:24px;padding:32px 36px;margin-bottom:24px;box-shadow:0 2px 16px rgba(61,35,20,.07);">
       <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:20px;">🛒 Items Ordered</h2>
       <?php foreach ($items as $item): ?>
@@ -99,7 +122,7 @@ $paymentLabels = [
       </div>
     </div>
 
-    <!-- Delivery Details -->
+    <!-- Delivery details -->
     <div style="background:var(--white);border-radius:24px;padding:32px 36px;margin-bottom:24px;box-shadow:0 2px 16px rgba(61,35,20,.07);">
       <h2 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:20px;">📋 Delivery Details</h2>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">

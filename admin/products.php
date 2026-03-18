@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 $pageTitle = 'Manage Products';
-require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/db.php';
 $pdo = db();
 $pdo = db();
@@ -15,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
 }
 
 $products = $pdo->query('SELECT * FROM products ORDER BY category, name')->fetchAll();
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once __DIR__ . '/../includes/header.php';
+
 ?>
 
 <div style="display:flex;min-height:80vh;flex-wrap:wrap;">

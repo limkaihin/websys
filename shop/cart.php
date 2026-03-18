@@ -1,7 +1,7 @@
 <?php
-$pageTitle = 'Your Cart';
-require_once dirname(__DIR__) . '/includes/header.php';
+require_once dirname(__DIR__) . '/includes/functions.php';
 
+// ── POST processing BEFORE any output ────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
     $action = post('action');
@@ -17,6 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     redirect('shop/cart.php');
 }
+
+// ── Output starts here ────────────────────────────────────────────────────────
+$pageTitle = 'Your Cart';
+require_once dirname(__DIR__) . '/includes/header.php';
 
 $cart  = $_SESSION['cart'] ?? [];
 $total = cart_total();

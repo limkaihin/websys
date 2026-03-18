@@ -174,3 +174,16 @@ Always end every grooming session with play or treats to build a positive associ
 
 -- ─────────────────────────────────────────────────────────────────────────────
 SELECT 'MeowMart database installed successfully.' AS status;
+
+-- ─── SESSION DATA (Zebra_Session – Open Source Project #5) ───────────────────
+-- This table is auto-created by Zebra_Session at runtime, but we include
+-- it here so a fresh import is fully self-contained.
+CREATE TABLE IF NOT EXISTS `session_data` (
+    `session_id`      VARCHAR(128)     NOT NULL,
+    `session_data`    BLOB             NOT NULL,
+    `session_expire`  INT(11) UNSIGNED NOT NULL,
+    `http_user_agent` VARCHAR(250)     DEFAULT NULL,
+    `ip_address`      VARCHAR(45)      DEFAULT NULL,
+    `last_active`     TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

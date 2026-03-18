@@ -8,10 +8,10 @@
       </div>
       <p>Singapore's favourite destination for everything cats. Quality products, happy cats, delighted owners.</p>
       <div class="social-links">
-        <a class="social-btn" href="#" aria-label="Visit our Facebook page">📘</a>
-        <a class="social-btn" href="#" aria-label="Visit our Instagram page">📸</a>
-        <a class="social-btn" href="#" aria-label="Visit our TikTok page">🎵</a>
-        <a class="social-btn" href="#" aria-label="Chat with customer support">💬</a>
+        <a class="social-btn" href="#" aria-label="Visit our Facebook page"><i class="fa-brands fa-facebook-f"></i></a>
+        <a class="social-btn" href="#" aria-label="Visit our Instagram page"><i class="fa-brands fa-instagram"></i></a>
+        <a class="social-btn" href="#" aria-label="Visit our TikTok page"><i class="fa-brands fa-tiktok"></i></a>
+        <a class="social-btn" href="#" aria-label="Chat with customer support"><i class="fa-solid fa-comment-dots"></i></a>
       </div>
     </div>
 

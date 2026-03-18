@@ -2,7 +2,6 @@
 $pageTitle = 'Manage Orders';
 require_once dirname(__DIR__) . '/includes/functions.php';
 require_admin();
-require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
 $pdo = db();
@@ -41,12 +40,22 @@ if ($search !== '') {
     $params[] = (int)$search;
 }
 $sql .= ' GROUP BY o.id ORDER BY o.created_at DESC';
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-$orders = $stmt->fetchAll();
+$orders = [];
+$tablesMissing = false;
+try {
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $orders = $stmt->fetchAll();
+} catch (PDOException $e) {
+    if (strpos($e->getMessage(), '1146') !== false) { $tablesMissing = true; }
+    else throw $e;
+}
 
 // Stats
-$stats = $pdo->query('SELECT status, COUNT(*) as cnt, SUM(total) as rev FROM orders GROUP BY status')->fetchAll(PDO::FETCH_ASSOC);
+$stats = [];
+try {
+    $stats = $pdo->query('SELECT status, COUNT(*) as cnt, SUM(total) as rev FROM orders GROUP BY status')->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) { if (strpos($e->getMessage(), '1146') === false) throw $e; }
 $statMap = [];
 foreach ($stats as $s) $statMap[$s['status']] = $s;
 $totalRev = array_sum(array_column($stats, 'rev'));
@@ -58,6 +67,9 @@ $statusColors = [
     'delivered'  => ['bg'=>'#dcfce7','color'=>'#166534','label'=>'Delivered'],
     'cancelled'  => ['bg'=>'#fee2e2','color'=>'#991b1b','label'=>'Cancelled'],
 ];
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once dirname(__DIR__) . '/includes/header.php';
+
 ?>
 
 <?php include __DIR__ . '/sidebar.php'; ?>

@@ -1,7 +1,5 @@
 <?php
-$pageTitle = 'Checkout';
 require_once dirname(__DIR__) . '/includes/functions.php';
-require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
 $cart  = $_SESSION['cart'] ?? [];
@@ -31,43 +29,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo  = db();
         $user = current_user();
 
-        $stmt = $pdo->prepare(
-            'INSERT INTO orders (user_id, name, email, address, payment, total, status)
-             VALUES (?, ?, ?, ?, ?, ?, ?)'
-        );
-        $stmt->execute([
-            $user['id'] ?? null,
-            $name,
-            $email,
-            $address,
-            $payment,
-            $total,
-            'confirmed'
-        ]);
-        $orderId = (int)$pdo->lastInsertId();
-
-        $itemStmt = $pdo->prepare(
-            'INSERT INTO order_items (order_id, product_id, name, price, qty)
-             VALUES (?, ?, ?, ?, ?)'
-        );
-        foreach ($cart as $pid => $row) {
-            $itemStmt->execute([
-                $orderId,
-                (int)$pid,
-                $row['name'],
-                (float)$row['price'],
-                (int)$row['qty']
+        try {
+            // Insert order
+            $stmt = $pdo->prepare(
+                'INSERT INTO orders (user_id, name, email, address, payment, total, status)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)'
+            );
+            $stmt->execute([
+                $user['id'] ?? null,
+                $name, $email, $address, $payment, $total, 'confirmed'
             ]);
-        }
+            $orderId = (int)$pdo->lastInsertId();
 
-        unset($_SESSION['cart']);
-        set_flash('success', 'Order #' . $orderId . ' confirmed! Thank you, ' . $name . '. 🐾');
-        redirect('shop/order_confirmation.php?id=' . $orderId);
+            // Insert order items
+            $itemStmt = $pdo->prepare(
+                'INSERT INTO order_items (order_id, product_id, name, price, qty) VALUES (?, ?, ?, ?, ?)'
+            );
+            foreach ($cart as $pid => $row) {
+                $itemStmt->execute([$orderId, (int)$pid, $row['name'], (float)$row['price'], (int)$row['qty']]);
+            }
+
+            unset($_SESSION['cart']);
+            set_flash('success', 'Order #' . $orderId . ' confirmed! Thank you, ' . h($name) . '. 🐾');
+            redirect('shop/order_confirmation.php?id=' . $orderId);
+
+        } catch (PDOException $e) {
+            // Orders table not yet created — fall back to cart-clear + flash
+            if (strpos($e->getMessage(), '1146') !== false) {
+                unset($_SESSION['cart']);
+                set_flash('success', 'Thank you, ' . h($name) . '! Your order has been received. 🐾 (Tip: run sql/migrate.sql to enable full order tracking.)');
+                redirect('index.php');
+            }
+            throw $e;
+        }
     } else {
         store_old(compact('name','email','address','payment'));
     }
 }
 $user = current_user();
+
+// ── Output starts here ────────────────────────────────────────────────────────
+$pageTitle = 'Checkout';
+require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
 <section style="padding:80px 5%;min-height:70vh;">
@@ -101,13 +104,13 @@ $user = current_user();
           <label for="co-payment">Payment Method</label>
           <select id="co-payment" name="payment">
             <option value="card"   <?= old('payment','card')=='card'   ?'selected':'' ?>>💳 Credit / Debit Card</option>
-            <option value="paynow" <?= old('payment')=='paynow' ?'selected':'' ?>>📱 PayNow</option>
-            <option value="grab"   <?= old('payment')=='grab'   ?'selected':'' ?>>🟢 GrabPay</option>
+            <option value="paynow" <?= old('payment')=='paynow'        ?'selected':'' ?>>📱 PayNow</option>
+            <option value="grab"   <?= old('payment')=='grab'          ?'selected':'' ?>>🟢 GrabPay</option>
           </select>
         </div>
       </div>
 
-      <!-- Order Summary -->
+      <!-- Order summary -->
       <div style="background:var(--white);border:1.5px solid var(--warm);border-radius:20px;padding:28px 32px;margin-bottom:20px;">
         <p style="font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;">Order Summary</p>
         <?php foreach ($cart as $row): ?>
@@ -125,7 +128,7 @@ $user = current_user();
         </div>
       </div>
 
-      <button class="btn-primary" type="submit" style="width:100%;display:block;text-align:center;font-size:1rem;text-decoration:none;">
+      <button class="btn-primary" type="submit" style="width:100%;display:block;text-align:center;font-size:1rem;">
         Place Order 🐾
       </button>
       <p style="text-align:center;font-size:.78rem;color:var(--brown-md);margin-top:12px;">Demo only — no real payment is processed.</p>

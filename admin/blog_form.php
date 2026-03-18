@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 $pageTitle = 'Blog Post Form';
-require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/db.php';
 $pdo = db();
 $pdo = db();
@@ -43,6 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     store_old(compact('title','tag','author','excerpt','content'));
 }
 $tags = ['Nutrition','Play','Grooming','Health','Lifestyle','Training'];
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once __DIR__ . '/../includes/header.php';
+
 ?>
 
 <div style="display:flex;min-height:80vh;">

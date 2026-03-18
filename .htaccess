@@ -1,0 +1,76 @@
+# MeowMart — Apache configuration
+# Based on HTML5 Boilerplate (Open Source Project #3)
+# https://github.com/h5bp/server-configs-apache
+
+# ── Default document ─────────────────────────────────────────────────────────
+DirectoryIndex index.php index.html
+
+# ── Security headers (HTML5 Boilerplate guidance) ────────────────────────────
+<IfModule mod_headers.c>
+    # Prevent clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+    # Enable XSS filter in older browsers
+    Header always set X-XSS-Protection "1; mode=block"
+    # Referrer policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    # Permissions policy
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    # Basic CSP — allows CDNs for Bootstrap, Fonts, Chart.js, Font Awesome
+    Header always set Content-Security-Policy "default-src 'self'; \
+        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; \
+        font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; \
+        img-src 'self' data: https:; \
+        connect-src 'self';"
+</IfModule>
+
+# ── Block access to sensitive files ──────────────────────────────────────────
+<FilesMatch "(^\.htaccess|config\.php|composer\.(json|lock)|README\.md|\.gitignore)$">
+    Require all denied
+</FilesMatch>
+
+# ── Block directory listing ───────────────────────────────────────────────────
+Options -Indexes
+
+# ── Compression (HTML5 Boilerplate performance) ───────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE text/plain text/xml application/xml
+</IfModule>
+
+# ── Browser caching (HTML5 Boilerplate guidance) ─────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # HTML — short TTL (content changes often)
+    ExpiresByType text/html                    "access plus 0 seconds"
+    # CSS / JS — longer TTL (versioned via query string)
+    ExpiresByType text/css                     "access plus 1 month"
+    ExpiresByType application/javascript       "access plus 1 month"
+    # Fonts & images — long TTL
+    ExpiresByType image/png                    "access plus 1 year"
+    ExpiresByType image/jpeg                   "access plus 1 year"
+    ExpiresByType image/svg+xml                "access plus 1 year"
+    ExpiresByType font/woff2                   "access plus 1 year"
+    ExpiresByType application/font-woff        "access plus 1 year"
+</IfModule>
+
+# ── Correct MIME types (HTML5 Boilerplate) ────────────────────────────────────
+<IfModule mod_mime.c>
+    AddType text/css                .css
+    AddType application/javascript  .js
+    AddType image/svg+xml           .svg
+    AddType font/woff2              .woff2
+    AddType application/font-woff   .woff
+</IfModule>
+
+# ── Remove ETags (performance) ────────────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
+
+# ── Force UTF-8 ───────────────────────────────────────────────────────────────
+AddDefaultCharset UTF-8

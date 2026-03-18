@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 $pageTitle = 'Manage Blog Posts';
-require_once __DIR__ . '/../includes/header.php';
 require_once __DIR__ . '/../includes/db.php';
 $pdo = db();
 $pdo = db();
@@ -15,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && post('action') === 'delete') {
 }
 
 $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetchAll();
+// ── Output starts here ─────────────────────────────────────────────────────
+require_once __DIR__ . '/../includes/header.php';
+
 ?>
 
 <div style="display:flex;min-height:80vh;flex-wrap:wrap;">
