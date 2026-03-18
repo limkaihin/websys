@@ -128,7 +128,7 @@ function pageUrl(string $s, int $pg, string $so): string {
         <h3 class="product-name"><?= htmlspecialchars($p['name']) ?></h3>
         <div class="product-stars">⭐⭐⭐⭐⭐ <span class="count">(<?= (($p['id']*47+83)%450)+50 ?>)</span></div>
         <?php if (!empty($p['description'])): ?>
-          <p style="font-size:.78rem;color:var(--brown-md);line-height:1.5;margin:6px 0 10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+        <p style="font-size:.78rem; color:var(--brown-md); line-height:1.5; margin:6px 0 10px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; line-clamp:2; overflow:hidden;">
             <?= htmlspecialchars($p['description']) ?>
           </p>
         <?php endif; ?>
