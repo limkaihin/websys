@@ -53,7 +53,6 @@ $categories = [
     ['slug' => 'apparel',     'label' => 'Apparel',     'icon' => '👗'],
     ['slug' => 'accessories', 'label' => 'Accessories', 'icon' => '🎀'],
 ];
-$emojiMap = ['food' => '🥩', 'litter' => '🧴', 'toys' => '🧶', 'apparel' => '👗', 'accessories' => '🎀'];
 
 // Build return_to for wishlist redirects
 $returnTo = 'shop/products.php?' . http_build_query(['cat' => $cat, 'q' => $search, 'sort' => $sort]);
@@ -66,30 +65,28 @@ require_once dirname(__DIR__) . '/includes/header.php';
   <!-- Toolbar -->
   <div class="products-toolbar" style="flex-direction:column;align-items:stretch;gap:20px;">
 
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="products-header-row">
       <div class="section-header" style="text-align:left;margin-bottom:0;">
         <div class="section-tag">🛒 Browse</div>
         <h1 class="section-title">Shop <em><?= $cat ? ucfirst($cat) : 'Everything' ?></em></h1>
       </div>
 
       <!-- Search + Sort -->
-      <form method="GET" role="search" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <form method="GET" role="search" class="products-search-form">
         <?php if ($cat): ?><input type="hidden" name="cat" value="<?= h($cat) ?>"><?php endif; ?>
-        <div style="position:relative;">
+        <div class="search-input-wrap">
           <label for="prod-search" class="visually-hidden">Search products</label>
           <input id="prod-search" type="search" name="q" value="<?= h($search) ?>"
                  placeholder="Search products…"
-                 style="padding:9px 14px 9px 36px;border:1.5px solid var(--warm);border-radius:20px;
-                        font-family:'DM Sans',sans-serif;font-size:.88rem;background:var(--white);
-                        outline:none;min-width:180px;color:var(--brown);"
+                 class="products-search-input"
                  aria-label="Search products"/>
-          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;">🔍</span>
+          <span class="search-input-icon">🔍</span>
         </div>
         <label for="prod-sort" class="visually-hidden">Sort by</label>
         <select id="prod-sort" name="sort" onchange="this.form.submit()"
                 style="padding:9px 14px;border:1.5px solid var(--warm);border-radius:20px;
                        font-family:'DM Sans',sans-serif;font-size:.88rem;background:var(--white);
-                       color:var(--brown);cursor:pointer;">
+                       color:var(--brown);cursor:pointer;min-width:150px;">
           <option value="name"       <?= $sort==='name'      ?'selected':'' ?>>Name A–Z</option>
           <option value="price_asc"  <?= $sort==='price_asc' ?'selected':'' ?>>Price: Low→High</option>
           <option value="price_desc" <?= $sort==='price_desc'?'selected':'' ?>>Price: High→Low</option>
@@ -128,7 +125,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
   <?php else: ?>
     <div class="products-grid">
       <?php foreach ($products as $p):
-        $icon           = $emojiMap[strtolower($p['category'])] ?? '🐾';
+        $icon           = product_icon_for($p);
         [$stars, $count] = stable_rating((int)$p['id']);
         $starStr        = str_repeat('⭐', $stars);
       ?>
@@ -137,7 +134,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
             <div class="product-img">
               <span aria-hidden="true"><?= $icon ?></span>
               <?php if ($p['is_featured']): ?><div class="ribbon" aria-label="Featured product">Featured</div><?php endif; ?>
-              <form method="POST" style="position:absolute;top:12px;right:12px;z-index:2;" onclick="event.stopPropagation()">
+              <form method="POST" style="position:absolute;top:12px;right:12px;z-index:2;" onclick="event.stopPropagation()" data-ajax-wishlist="listing" data-product-id="<?= (int)$p['id'] ?>">
                 <input type="hidden" name="csrf_token"  value="<?= h(csrf_token()) ?>">
                 <input type="hidden" name="product_id"  value="<?= (int)$p['id'] ?>">
                 <input type="hidden" name="return_to"   value="<?= h($returnTo) ?>">

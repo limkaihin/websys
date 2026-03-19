@@ -8,12 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pid    = (int)post('product_id');
 
     if ($action === 'remove') {
-        unset($_SESSION['cart'][$pid]);
+        cart_remove_product($pid);
     } elseif ($action === 'update') {
         $qty = max(1, (int)post('qty'));
-        if (isset($_SESSION['cart'][$pid])) {
-            $_SESSION['cart'][$pid]['qty'] = $qty;
-        }
+        cart_set_quantity($pid, $qty);
     }
     redirect('shop/cart.php');
 }
@@ -22,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $pageTitle = 'Your Cart';
 require_once dirname(__DIR__) . '/includes/header.php';
 
-$cart  = $_SESSION['cart'] ?? [];
+$cart  = cart_items();
 $total = cart_total();
 ?>
 
@@ -41,11 +39,9 @@ $total = cart_total();
         <a href="<?= h(base_url('shop/products.php')) ?>" class="btn-primary" style="text-decoration:none;display:inline-block;">Browse Products →</a>
       </div>
     <?php else: ?>
-      <?php foreach ($cart as $pid => $row):
-        $emojiMap = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','accessories'=>'🎀'];
-      ?>
+      <?php foreach ($cart as $pid => $row): $icon = product_icon_from_text((string)($row['name'] ?? '')); ?>
       <div class="cart-item" style="background:var(--white);border-radius:20px;padding:20px 24px;margin-bottom:16px;display:flex;gap:20px;align-items:center;box-shadow:0 2px 12px rgba(61,35,20,.06);">
-        <div class="thumb" style="width:80px;height:80px;border-radius:16px;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;">🐾</div>
+        <div class="thumb" style="width:80px;height:80px;border-radius:16px;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:2.5rem;flex-shrink:0;"><?= $icon ?></div>
         <div class="details" style="flex:1;">
           <h4 style="font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:4px;"><?= h($row['name']) ?></h4>
           <div style="font-size:.82rem;color:var(--brown-md);margin-bottom:12px;"><?= money((float)$row['price']) ?> each</div>

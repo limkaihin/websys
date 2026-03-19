@@ -27,8 +27,6 @@ $allProds = $allStmt->fetchAll();
 $blogStmt = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC LIMIT 3');
 $posts    = $blogStmt->fetchAll();
 
-$emojiMap = ['food'=>'🥩','litter'=>'🧴','toys'=>'🧶','apparel'=>'👗','accessories'=>'🎀'];
-
 function stable_rating_home(int $id): array {
     $seed  = ($id * 6271 + 1009) % 1000;
     return [4 + (($id * 31) % 2), 50 + ($seed % 450)];
@@ -115,7 +113,7 @@ function stable_rating_home(int $id): array {
   <?php if (!empty($featured)): ?>
   <div class="products-grid">
     <?php foreach ($featured as $p):
-      $icon = $emojiMap[strtolower($p['category'])] ?? '🐾';
+      $icon = product_icon_for($p);
       [$stars, $count] = stable_rating_home((int)$p['id']);
     ?>
     <article class="product-card" aria-label="<?= h($p['name']) ?>">

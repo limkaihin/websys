@@ -28,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'cat_name' => $user['cat_name'],
                 'role'     => $user['role'],
             ];
+            unset($_SESSION['_user_collection_state_loaded']);
+            ensure_user_collection_state_loaded();
+            persist_user_collection_state();
             clear_old();
             set_flash('success', 'Welcome back, ' . $user['name'] . '! 🐾');
             redirect('index.php');         // safe — no output yet
@@ -43,7 +46,7 @@ $pageTitle = 'Log In';
 require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
-<div class="membership" id="membership" style="margin:60px 5%;grid-template-columns:1fr 1fr;">
+<div class="membership auth-shell" id="membership">
   <div class="membership-left">
     <h2>Welcome Back to <em>MeowMart</em></h2>
     <p>Log in to access your MeowClub perks, track orders, earn Pawpoints, and shop with your saved details.</p>

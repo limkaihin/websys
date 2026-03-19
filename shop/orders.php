@@ -133,7 +133,7 @@ $tabs = [
             <div style="padding:20px 24px;">
               <?php foreach ($previewItems as $item): ?>
                 <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;">
-                  <div style="width:48px;height:48px;border-radius:12px;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🐾</div>
+                  <div style="width:48px;height:48px;border-radius:12px;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;"><?= product_icon_from_text((string)($item['name'] ?? '')) ?></div>
                   <div style="flex:1;">
                     <div style="font-size:.9rem;font-weight:600;color:var(--brown);"><?= h($item['name']) ?></div>
                     <div style="font-size:.78rem;color:var(--brown-md);">Qty: <?= (int)$item['qty'] ?></div>

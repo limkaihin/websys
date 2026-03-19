@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="Demo PayNow QR code">
+  <rect width="240" height="240" rx="24" fill="#fff7ee"/>
+  <rect x="24" y="24" width="48" height="48" rx="8" fill="#3d2314"/>
+  <rect x="34" y="34" width="28" height="28" rx="4" fill="#fff7ee"/>
+  <rect x="168" y="24" width="48" height="48" rx="8" fill="#3d2314"/>
+  <rect x="178" y="34" width="28" height="28" rx="4" fill="#fff7ee"/>
+  <rect x="24" y="168" width="48" height="48" rx="8" fill="#3d2314"/>
+  <rect x="34" y="178" width="28" height="28" rx="4" fill="#fff7ee"/>
+  <g fill="#3d2314">
+    <rect x="96" y="24" width="12" height="12" rx="2"/>
+    <rect x="120" y="24" width="12" height="12" rx="2"/>
+    <rect x="132" y="36" width="12" height="12" rx="2"/>
+    <rect x="84" y="48" width="12" height="12" rx="2"/>
+    <rect x="108" y="48" width="12" height="12" rx="2"/>
+    <rect x="132" y="60" width="12" height="12" rx="2"/>
+    <rect x="84" y="72" width="12" height="12" rx="2"/>
+    <rect x="108" y="72" width="12" height="12" rx="2"/>
+    <rect x="156" y="84" width="12" height="12" rx="2"/>
+    <rect x="180" y="84" width="12" height="12" rx="2"/>
+    <rect x="96" y="96" width="12" height="12" rx="2"/>
+    <rect x="120" y="96" width="12" height="12" rx="2"/>
+    <rect x="144" y="96" width="12" height="12" rx="2"/>
+    <rect x="72" y="108" width="12" height="12" rx="2"/>
+    <rect x="96" y="108" width="12" height="12" rx="2"/>
+    <rect x="132" y="108" width="12" height="12" rx="2"/>
+    <rect x="156" y="108" width="12" height="12" rx="2"/>
+    <rect x="180" y="108" width="12" height="12" rx="2"/>
+    <rect x="84" y="120" width="12" height="12" rx="2"/>
+    <rect x="108" y="120" width="12" height="12" rx="2"/>
+    <rect x="144" y="120" width="12" height="12" rx="2"/>
+    <rect x="168" y="120" width="12" height="12" rx="2"/>
+    <rect x="96" y="132" width="12" height="12" rx="2"/>
+    <rect x="120" y="132" width="12" height="12" rx="2"/>
+    <rect x="156" y="132" width="12" height="12" rx="2"/>
+    <rect x="180" y="132" width="12" height="12" rx="2"/>
+    <rect x="84" y="144" width="12" height="12" rx="2"/>
+    <rect x="108" y="144" width="12" height="12" rx="2"/>
+    <rect x="132" y="144" width="12" height="12" rx="2"/>
+    <rect x="168" y="144" width="12" height="12" rx="2"/>
+    <rect x="84" y="168" width="12" height="12" rx="2"/>
+    <rect x="108" y="168" width="12" height="12" rx="2"/>
+    <rect x="132" y="168" width="12" height="12" rx="2"/>
+    <rect x="156" y="168" width="12" height="12" rx="2"/>
+    <rect x="180" y="168" width="12" height="12" rx="2"/>
+    <rect x="84" y="180" width="12" height="12" rx="2"/>
+    <rect x="132" y="180" width="12" height="12" rx="2"/>
+    <rect x="156" y="180" width="12" height="12" rx="2"/>
+    <rect x="108" y="192" width="12" height="12" rx="2"/>
+    <rect x="144" y="192" width="12" height="12" rx="2"/>
+    <rect x="168" y="192" width="12" height="12" rx="2"/>
+  </g>
+  <text x="120" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#f97316">PAYNOW DEMO</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Bag body -->
+  <rect x="22" y="30" width="76" height="75" rx="8" fill="#8FA882"/>
+  <!-- Bag top fold -->
+  <rect x="22" y="25" width="76" height="14" rx="4" fill="#6B8C5E"/>
+  <!-- Bag clip/seal -->
+  <rect x="35" y="23" width="50" height="6" rx="3" fill="#3D2314"/>
+  <!-- Label -->
+  <rect x="30" y="48" width="60" height="42" rx="6" fill="#FAF5EE"/>
+  <!-- Lavender sprigs -->
+  <line x1="60" y1="82" x2="60" y2="60" stroke="#8FA882" stroke-width="2"/>
+  <ellipse cx="60" cy="57" rx="5" ry="8" fill="#C8A8D8"/>
+  <ellipse cx="53" cy="62" rx="4" ry="7" fill="#C8A8D8" transform="rotate(-20 53 62)"/>
+  <ellipse cx="67" cy="62" rx="4" ry="7" fill="#C8A8D8" transform="rotate(20 67 62)"/>
+  <!-- "8kg" text area -->
+  <rect x="42" y="78" width="36" height="10" rx="5" fill="#8FA882"/>
+  <!-- Stars pattern -->
+  <circle cx="38" cy="55" r="2" fill="#8FA882" opacity=".5"/>
+  <circle cx="82" cy="55" r="2" fill="#8FA882" opacity=".5"/>
+  <circle cx="38" cy="85" r="2" fill="#8FA882" opacity=".5"/>
+  <circle cx="82" cy="85" r="2" fill="#8FA882" opacity=".5"/>
+</svg>

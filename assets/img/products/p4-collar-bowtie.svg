@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Collar band arc -->
+  <path d="M20 75 Q60 45 100 75" stroke="#E8651A" stroke-width="14" fill="none" stroke-linecap="round"/>
+  <path d="M20 75 Q60 45 100 75" stroke="#F5924E" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <!-- Small buckle -->
+  <rect x="54" y="46" width="12" height="9" rx="2" fill="#C8941A"/>
+  <rect x="57" y="48" width="6" height="5" rx="1" fill="#E8B84B"/>
+  <!-- Bow tie -->
+  <polygon points="45,85 60,75 75,85 60,95" fill="#3D2314"/>
+  <polygon points="45,85 58,80 58,90" fill="#3D2314"/>
+  <polygon points="75,85 62,80 62,90" fill="#3D2314"/>
+  <ellipse cx="60" cy="85" rx="6" ry="5" fill="#E8651A"/>
+  <!-- Floral detail on collar -->
+  <circle cx="35" cy="64" r="4" fill="#FAF5EE" opacity=".6"/>
+  <circle cx="85" cy="64" r="4" fill="#FAF5EE" opacity=".6"/>
+  <circle cx="60" cy="54" r="3" fill="#FAF5EE" opacity=".6"/>
+</svg>

@@ -7,15 +7,18 @@ USE meowmart;
 
 -- ─── USERS ──────────────────────────────────────────────────────────────────
 CREATE TABLE users (
-    id         INT UNSIGNED     AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(120)     NOT NULL,
-    email      VARCHAR(180)     NOT NULL UNIQUE,
-    cat_name   VARCHAR(80)      DEFAULT NULL,
-    password   VARCHAR(255)     NOT NULL,
-    role       ENUM('member','admin') NOT NULL DEFAULT 'member',
-    phone      VARCHAR(30)      DEFAULT NULL,
-    address    VARCHAR(255)     DEFAULT NULL,
-    created_at TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
+    id          INT UNSIGNED     AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(120)     NOT NULL,
+    email       VARCHAR(180)     NOT NULL UNIQUE,
+    cat_name    VARCHAR(80)      DEFAULT NULL,
+    password    VARCHAR(255)     NOT NULL,
+    role        ENUM('member','admin') NOT NULL DEFAULT 'member',
+    phone       VARCHAR(30)      DEFAULT NULL,
+    address       VARCHAR(255)     DEFAULT NULL,
+    referred_by   VARCHAR(50)      DEFAULT NULL,
+    wishlist_json LONGTEXT         DEFAULT NULL,
+    cart_json     LONGTEXT         DEFAULT NULL,
+    created_at    TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ─── PRODUCTS ────────────────────────────────────────────────────────────────
@@ -42,15 +45,19 @@ CREATE TABLE blog_posts (
 
 -- ─── ORDERS ──────────────────────────────────────────────────────────────────
 CREATE TABLE orders (
-    id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
-    user_id    INT UNSIGNED   DEFAULT NULL,
-    name       VARCHAR(120)   NOT NULL,
-    email      VARCHAR(180)   NOT NULL,
-    address    TEXT           NOT NULL,
-    payment    VARCHAR(30)    NOT NULL DEFAULT 'card',
-    total      DECIMAL(10,2)  NOT NULL,
-    status     ENUM('confirmed','shipped','delivered','cancelled') NOT NULL DEFAULT 'confirmed',
-    created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    id                INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
+    user_id           INT UNSIGNED   DEFAULT NULL,
+    name              VARCHAR(120)   NOT NULL,
+    email             VARCHAR(180)   NOT NULL,
+    address           TEXT           NOT NULL,
+    payment           VARCHAR(30)    NOT NULL DEFAULT 'card',
+    payment_reference VARCHAR(120)   DEFAULT NULL,
+    coupon_code       VARCHAR(50)    DEFAULT NULL,
+    referral_code     VARCHAR(50)    DEFAULT NULL,
+    discount          DECIMAL(10,2)  NOT NULL DEFAULT 0.00,
+    total             DECIMAL(10,2)  NOT NULL,
+    status            ENUM('confirmed','shipped','delivered','cancelled') NOT NULL DEFAULT 'confirmed',
+    created_at        TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 

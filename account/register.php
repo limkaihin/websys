@@ -5,20 +5,23 @@ require_once dirname(__DIR__) . '/includes/mail.php';
 
 if (is_logged_in()) redirect('index.php');
 
-// ── POST processing BEFORE any output ────────────────────────────────────────
+$prefillRef = sanitize_referral_code((string)($_GET['ref'] ?? ''));
+
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
-    $name     = post('name');
-    $email    = post('email');
-    $cat_name = post('cat_name');
-    $password = post('password');
-    $confirm  = post('confirm');
+    $name          = post('name');
+    $email         = post('email');
+    $cat_name      = post('cat_name');
+    $password      = post('password');
+    $confirm       = post('confirm');
+    $referral_code = sanitize_referral_code(post('referral_code'));
 
-    if (strlen($name) < 2)                          $errors['name']     = 'Name must be at least 2 characters.';
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email']    = 'Please enter a valid email.';
-    if (strlen($password) < 8)                      $errors['password'] = 'Password must be at least 8 characters.';
-    if ($password !== $confirm)                     $errors['confirm']  = 'Passwords do not match.';
+    if (strlen($name) < 2)                          $errors['name']          = 'Name must be at least 2 characters.';
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors['email']         = 'Please enter a valid email.';
+    if (strlen($password) < 8)                      $errors['password']      = 'Password must be at least 8 characters.';
+    if ($password !== $confirm)                     $errors['confirm']       = 'Passwords do not match.';
+    if ($referral_code !== '' && strlen($referral_code) < 4) $errors['referral_code'] = 'Please enter a valid referral code.';
 
     if (empty($errors)) {
         $pdo    = db();
@@ -27,22 +30,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($exists->fetch()) {
             $errors['email'] = 'An account with this email already exists.';
         } else {
-            $pdo->prepare('INSERT INTO users (name, email, cat_name, password, role) VALUES (?,?,?,?,?)')
-                ->execute([$name, $email, $cat_name, password_hash($password, PASSWORD_BCRYPT), 'member']);
+            $columns = ['name', 'email', 'cat_name', 'password', 'role'];
+            $values  = [$name, $email, $cat_name, password_hash($password, PASSWORD_BCRYPT), 'member'];
 
-            // Welcome email via PHPMailer
+            if (db_has_column('users', 'referred_by')) {
+                $columns[] = 'referred_by';
+                $values[]  = $referral_code !== '' ? $referral_code : null;
+            }
+
+            $placeholders = implode(',', array_fill(0, count($columns), '?'));
+            $pdo->prepare('INSERT INTO users (' . implode(',', $columns) . ') VALUES (' . $placeholders . ')')->execute($values);
+
+            $refLine = $referral_code !== ''
+                ? '<p>Your account was created with referral code <strong>' . h($referral_code) . '</strong>.</p>'
+                : '';
             $catLine = $cat_name
                 ? '<p>We can\'t wait to help you find the best for <strong>' . h($cat_name) . '</strong>! 🐱</p>'
                 : '';
-            $html = "<p>Hi <strong>" . h($name) . "</strong>, welcome to the MeowClub family! 🐾</p>
-                $catLine
-                <ul style='line-height:2'>
-                  <li>🚚 Free delivery on all orders</li>
-                  <li>🎁 Exclusive member-only deals</li>
-                  <li>⭐ Pawpoints on every purchase</li>
-                </ul>
-                <a class='btn' href='" . base_url('shop/products.php') . "'>Start Shopping →</a>
-                <p style='margin-top:24px'>Purrs &amp; headbumps,<br><strong>The MeowMart Team</strong></p>";
+            $html = "<p>Hi <strong>" . h($name) . "</strong>, welcome to the MeowClub family! 🐾</p>"
+                . $catLine
+                . $refLine
+                . "<ul style='line-height:2'>"
+                . "<li>🚚 Free delivery on orders above $60</li>"
+                . "<li>🎁 Exclusive member-only deals</li>"
+                . "<li>⭐ Pawpoints on every purchase</li>"
+                . "</ul>"
+                . "<a class='btn' href='" . base_url('shop/products.php') . "'>Start Shopping →</a>"
+                . "<p style='margin-top:24px'>Purrs &amp; headbumps,<br><strong>The MeowMart Team</strong></p>";
             send_mail($email, $name, 'Welcome to MeowClub! 🐾', $html);
 
             set_flash('success', 'Welcome to MeowClub, ' . $name . '! Please log in.');
@@ -50,22 +64,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             redirect('account/login.php');
         }
     }
-    store_old(compact('name', 'email', 'cat_name'));
+
+    store_old(compact('name', 'email', 'cat_name', 'referral_code'));
 }
 
-// ── Output starts here ────────────────────────────────────────────────────────
 $pageTitle = 'Join MeowClub';
 require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
-<div class="membership" id="membership" style="margin:60px 5%;">
+<div class="membership auth-shell" id="membership">
   <div class="membership-left">
     <h2>Join the <em>MeowClub</em> &amp; Save Every Day</h2>
     <p>Free membership with exclusive perks, early sale access, birthday treats for your cat, and more.</p>
     <div class="membership-perks">
       <?php foreach ([
         ['fa-gift',        'Earn Pawpoints',   'Redeem on every purchase'],
-        ['fa-truck',       'Free Delivery',    'On all orders for members'],
+        ['fa-truck',       'Free Delivery',    'On orders above $60'],
         ['fa-cake-candles','Birthday Surprise','A free gift for your cat yearly'],
         ['fa-bolt',        'Early Access',     'Shop new arrivals first'],
       ] as [$icon, $title, $sub]): ?>
@@ -95,6 +109,13 @@ require_once dirname(__DIR__) . '/includes/header.php';
       <div class="form-field">
         <label for="rg-cat"><i class="fa-solid fa-cat fa-xs"></i> Your Cat's Name</label>
         <input id="rg-cat" type="text" name="cat_name" value="<?= old('cat_name') ?>" placeholder="e.g. Mochi"/>
+      </div>
+      <div class="form-field">
+        <label for="rg-ref"><i class="fa-solid fa-user-group fa-xs"></i> Referral Code <span style="font-weight:400;color:var(--brown-md);">(optional)</span></label>
+        <input id="rg-ref" type="text" name="referral_code" value="<?= old('referral_code', $prefillRef) ?>"
+               placeholder="Enter your friend's code" autocomplete="off" style="text-transform:uppercase;"/>
+        <p style="font-size:.78rem;color:var(--brown-md);margin-top:6px;">Joining from a friend's link will prefill this automatically.</p>
+        <?php if (!empty($errors['referral_code'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:4px;"><?= h($errors['referral_code']) ?></p><?php endif; ?>
       </div>
       <div class="form-field">
         <label for="rg-pw"><i class="fa-solid fa-lock fa-xs"></i> Password</label>

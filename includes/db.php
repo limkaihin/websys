@@ -13,3 +13,27 @@ function db(): PDO {
     }
     return $pdo;
 }
+
+function db_table_columns(string $table): array
+{
+    static $cache = [];
+    if (isset($cache[$table])) {
+        return $cache[$table];
+    }
+
+    $pdo = db();
+    try {
+        $stmt = $pdo->query('SHOW COLUMNS FROM `' . str_replace('`', '', $table) . '`');
+        $rows = $stmt->fetchAll();
+        $cache[$table] = array_map(static fn(array $row): string => (string)$row['Field'], $rows);
+    } catch (Throwable $e) {
+        $cache[$table] = [];
+    }
+
+    return $cache[$table];
+}
+
+function db_has_column(string $table, string $column): bool
+{
+    return in_array($column, db_table_columns($table), true);
+}

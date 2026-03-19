@@ -16,7 +16,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
 
 <!-- MISSION / VISION -->
 <section style="padding:80px 5%;background:var(--cream);">
-  <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+  <div class="split-grid-2" style="max-width:1100px;margin:0 auto;">
     <div style="background:var(--white);border-radius:28px;padding:48px 40px;">
       <div style="font-size:3rem;margin-bottom:20px;">🎯</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;margin-bottom:16px;color:var(--brown);">Our Mission</h2>
@@ -40,7 +40,7 @@ require_once dirname(__DIR__) . '/includes/header.php';
     <div class="section-tag">💛 What We Stand For</div>
     <h2 class="section-title">Our <em>Values</em></h2>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1100px;margin:0 auto;">
+  <div class="values-grid">
     <?php
     $values = [
       ['🐾','Cat First', 'Every decision we make starts with one question: is this good for the cat?'],

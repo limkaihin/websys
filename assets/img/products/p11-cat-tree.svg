@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Base -->
+  <rect x="30" y="100" width="60" height="10" rx="5" fill="#C8941A"/>
+  <!-- Center pole -->
+  <rect x="56" y="25" width="8" height="75" rx="4" fill="#E8B84B"/>
+  <!-- Left pole -->
+  <rect x="25" y="55" width="7" height="45" rx="3.5" fill="#E8B84B"/>
+  <!-- Platforms -->
+  <!-- Top platform -->
+  <ellipse cx="60" cy="28" rx="22" ry="6" fill="#8FA882"/>
+  <rect x="38" y="22" width="44" height="6" rx="3" fill="#6B8C5E"/>
+  <!-- Middle platform left -->
+  <ellipse cx="35" cy="58" rx="18" ry="5" fill="#E8651A"/>
+  <rect x="17" y="53" width="36" height="5" rx="2.5" fill="#C87030"/>
+  <!-- Lower platform right -->
+  <ellipse cx="82" cy="78" rx="18" ry="5" fill="#8FA882"/>
+  <rect x="64" y="73" width="36" height="5" rx="2.5" fill="#6B8C5E"/>
+  <!-- Right pole -->
+  <rect x="88" y="78" width="7" height="22" rx="3.5" fill="#E8B84B"/>
+  <!-- Cat house on top -->
+  <rect x="46" y="8" width="28" height="20" rx="3" fill="#C8941A"/>
+  <polygon points="44,10 76,10 60,0" fill="#E8651A"/>
+  <ellipse cx="60" cy="20" rx="6" ry="7" fill="#3D2314" opacity=".6"/>
+  <!-- Hanging toy -->
+  <line x1="35" y1="53" x2="35" y2="43" stroke="#3D2314" stroke-width="1.5"/>
+  <circle cx="35" cy="40" r="4" fill="#E8651A"/>
+  <!-- Sisal scratching texture -->
+  <line x1="56" y1="30" x2="64" y2="30" stroke="#C8941A" stroke-width="1" opacity=".5"/>
+  <line x1="56" y1="38" x2="64" y2="38" stroke="#C8941A" stroke-width="1" opacity=".5"/>
+  <line x1="56" y1="46" x2="64" y2="46" stroke="#C8941A" stroke-width="1" opacity=".5"/>
+</svg>

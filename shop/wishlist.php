@@ -20,7 +20,6 @@ if (!empty($ids)) {
     $stmt->execute($ids);
     $products = $stmt->fetchAll();
 }
-$emojiMap = ['food' => '🥩', 'litter' => '🧴', 'toys' => '🧶', 'apparel' => '👗', 'accessories' => '🎀'];
 // ── Output starts here ─────────────────────────────────────────────────────
 require_once dirname(__DIR__) . '/includes/header.php';
 
@@ -43,11 +42,12 @@ require_once dirname(__DIR__) . '/includes/header.php';
     </div>
   <?php else: ?>
     <div class="products-grid">
-      <?php foreach ($products as $p): $icon = $emojiMap[strtolower($p['category'])] ?? '🐾'; ?>
-        <div class="product-card">
+      <?php foreach ($products as $p): $icon = product_icon_for($p); ?>
+        <article class="product-card product-card-clickable" aria-label="<?= h($p['name']) ?>">
+          <a href="<?= h(base_url('shop/product.php?id=' . $p['id'])) ?>" class="product-card-overlay" aria-label="View <?= h($p['name']) ?>"></a>
           <div class="product-img">
             <span><?= $icon ?></span>
-            <form method="POST" style="position:absolute;top:12px;right:12px;z-index:2;">
+            <form method="POST" style="position:absolute;top:12px;right:12px;z-index:3;" data-ajax-wishlist="wishlist" data-product-id="<?= (int)$p['id'] ?>">
               <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
               <input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>">
               <button class="wishlist active" type="submit" aria-label="Remove from wishlist">❤️</button>
@@ -56,12 +56,11 @@ require_once dirname(__DIR__) . '/includes/header.php';
           <div class="product-body">
             <div class="product-brand"><?= h($p['category']) ?></div>
             <h3 class="product-name"><?= h($p['name']) ?></h3>
-            <div class="product-footer">
+            <div class="product-footer product-footer-price-only">
               <div class="product-price"><?= money((float)$p['price']) ?></div>
-              <a href="<?= h(base_url('shop/product.php?id=' . $p['id'])) ?>" class="btn-cart" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">View</a>
             </div>
           </div>
-        </div>
+        </article>
       <?php endforeach; ?>
     </div>
   <?php endif; ?>

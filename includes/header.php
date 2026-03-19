@@ -10,6 +10,7 @@ require_once __DIR__ . '/db.php';
 
 // Initialise session (Zebra_Session or default) — must happen after DB
 _init_session(db());
+ensure_user_collection_state_loaded();
 
 $flash     = get_flash();
 $pageTitle = $pageTitle ?? site_name();
@@ -63,14 +64,35 @@ $pageDesc  = $pageDesc  ?? 'MeowMart — Singapore\'s favourite destination for 
 
 <!-- Flash messages -->
 <?php if ($flash): ?>
-<div role="status" aria-live="polite"
-     style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:10000;
-            background:<?= $flash['type']==='error'?'#b91c1c':'#166534' ?>;
-            color:#fff;padding:12px 32px;border-radius:12px;
-            font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;
-            box-shadow:0 4px 20px rgba(0,0,0,.2);">
-  <?= h($flash['message']) ?>
+<div class="flash-toast flash-toast-<?= $flash['type']==='error' ? 'error' : 'success' ?>" role="<?= $flash['type']==='error' ? 'alert' : 'status' ?>" aria-live="polite" data-flash-toast>
+  <div class="flash-toast__text"><?= h($flash['message']) ?></div>
+  <button type="button" class="flash-toast__close" aria-label="Dismiss message" data-flash-close>&times;</button>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var toast = document.querySelector('[data-flash-toast]');
+  if (!toast) return;
+
+  var dismissed = false;
+  var removeToast = function () {
+    if (dismissed) return;
+    dismissed = true;
+    toast.classList.add('is-hiding');
+    window.setTimeout(function () {
+      if (toast && toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 240);
+  };
+
+  var closeBtn = toast.querySelector('[data-flash-close]');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', removeToast);
+  }
+
+  window.setTimeout(removeToast, 10000);
+});
+</script>
 <?php endif; ?>
 
 <div class="site-header">

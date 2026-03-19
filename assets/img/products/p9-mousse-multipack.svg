@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Box main face -->
+  <rect x="18" y="38" width="68" height="62" rx="4" fill="#F5924E"/>
+  <!-- Box top face (3D) -->
+  <polygon points="18,38 86,38 102,22 34,22" fill="#E8651A"/>
+  <!-- Box side face (3D) -->
+  <polygon points="86,38 102,22 102,84 86,100" fill="#C87030"/>
+  <!-- Label strip -->
+  <rect x="18" y="55" width="68" height="28" fill="#FAF5EE" opacity=".9"/>
+  <!-- Fish illustration on label -->
+  <ellipse cx="42" cy="69" rx="13" ry="8" fill="#F5924E"/>
+  <polygon points="55,69 63,63 63,75" fill="#F5924E"/>
+  <circle cx="36" cy="67" r="2" fill="#3D2314"/>
+  <!-- Prawn shape -->
+  <path d="M68 62 Q75 65 72 72 Q69 76 65 73" stroke="#E8651A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="68" cy="61" r="3" fill="#E8651A"/>
+  <!-- 12-pack badge -->
+  <circle cx="72" cy="88" r="13" fill="#3D2314"/>
+  <text x="65" y="92" font-size="9" font-weight="bold" fill="#FAF5EE">12pk</text>
+  <!-- Lid line on box top -->
+  <line x1="34" y1="22" x2="102" y2="22" stroke="#C87030" stroke-width="1" opacity=".5"/>
+</svg>

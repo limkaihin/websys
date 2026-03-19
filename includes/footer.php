@@ -7,11 +7,12 @@
         <div class="name">MeowMart</div>
       </div>
       <p>Singapore's favourite destination for everything cats. Quality products, happy cats, delighted owners.</p>
-      <div class="social-links">
-        <a class="social-btn" href="#" aria-label="Visit our Facebook page"><i class="fa-brands fa-facebook-f"></i></a>
-        <a class="social-btn" href="#" aria-label="Visit our Instagram page"><i class="fa-brands fa-instagram"></i></a>
-        <a class="social-btn" href="#" aria-label="Visit our TikTok page"><i class="fa-brands fa-tiktok"></i></a>
-        <a class="social-btn" href="#" aria-label="Chat with customer support"><i class="fa-solid fa-comment-dots"></i></a>
+      <p style="max-width:340px;">Need help with an order, your membership perks, or a product question? <a href="<?= h(base_url('content/contact.php')) ?>" style="color:var(--orange-lt);text-decoration:none;font-weight:600;">Contact us here</a>.</p>
+      <div class="social-links" aria-label="MeowMart social platforms">
+        <span class="social-btn" aria-label="Facebook" title="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></span>
+        <span class="social-btn" aria-label="Instagram" title="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></span>
+        <span class="social-btn" aria-label="TikTok" title="TikTok"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></span>
+        <span class="social-btn" aria-label="Community chat" title="Community chat"><i class="fa-solid fa-comments" aria-hidden="true"></i></span>
       </div>
     </div>
 
@@ -23,7 +24,7 @@
         <li><a href="<?= h(base_url('shop/products.php?cat=toys')) ?>">Toys & Play</a></li>
         <li><a href="<?= h(base_url('shop/products.php?cat=apparel')) ?>">Cat Apparel</a></li>
         <li><a href="<?= h(base_url('shop/products.php?cat=accessories')) ?>">Accessories</a></li>
-        <li><a href="<?= h(base_url('shop/products.php')) ?>">New Arrivals</a></li>
+        <li><a href="<?= h(base_url('shop/products.php?sort=newest')) ?>">New Arrivals</a></li>
       </ul>
     </div>
 
@@ -31,20 +32,20 @@
       <h4>MeowClub</h4>
       <ul>
         <li><a href="<?= h(base_url('account/register.php')) ?>">Join Free</a></li>
-        <li><a href="<?= h(base_url('content/about.php')) ?>">How It Works</a></li>
-        <li><a href="#">Pawpoints</a></li>
-        <li><a href="#">Referrals</a></li>
-        <li><a href="#">Member Deals</a></li>
+        <li><a href="<?= h(base_url('content/meowclub.php#how-it-works')) ?>">How It Works</a></li>
+        <li><a href="<?= h(base_url('content/meowclub.php#pawpoints')) ?>">Pawpoints</a></li>
+        <li><a href="<?= h(base_url('content/meowclub.php#referrals')) ?>">Referrals</a></li>
+        <li><a href="<?= h(base_url('content/meowclub.php#member-deals')) ?>">Member Deals</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Help</h4>
       <ul>
-        <li><a href="<?= h(base_url('shop/orders.php')) ?>">Track My Order</a></li>
-        <li><a href="#">Returns & Refunds</a></li>
-        <li><a href="#">Shipping Info</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="<?= h(base_url('content/help.php#track-order')) ?>">Track My Order</a></li>
+        <li><a href="<?= h(base_url('content/help.php#returns')) ?>">Returns & Refunds</a></li>
+        <li><a href="<?= h(base_url('content/help.php#shipping')) ?>">Shipping Info</a></li>
+        <li><a href="<?= h(base_url('content/help.php#faq')) ?>">FAQ</a></li>
         <li><a href="<?= h(base_url('content/contact.php')) ?>">Contact Us</a></li>
       </ul>
     </div>

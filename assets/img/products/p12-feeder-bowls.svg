@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Stand base -->
+  <rect x="20" y="88" width="80" height="10" rx="5" fill="#6B3C22"/>
+  <!-- Stand legs -->
+  <rect x="28" y="70" width="8" height="22" rx="4" fill="#8B5A2B"/>
+  <rect x="84" y="70" width="8" height="22" rx="4" fill="#8B5A2B"/>
+  <!-- Frame top bar -->
+  <rect x="22" y="66" width="76" height="8" rx="4" fill="#6B3C22"/>
+  <!-- Bowl frame inserts -->
+  <ellipse cx="42" cy="70" rx="18" ry="6" fill="#3D2314"/>
+  <ellipse cx="78" cy="70" rx="18" ry="6" fill="#3D2314"/>
+  <!-- Left bowl - water -->
+  <ellipse cx="42" cy="68" rx="16" ry="5" fill="#B8D8E8"/>
+  <ellipse cx="42" cy="67" rx="12" ry="3" fill="#D0ECF8"/>
+  <!-- Water ripple -->
+  <ellipse cx="42" cy="67" rx="7" ry="1.5" fill="none" stroke="#B8D8E8" stroke-width="1" opacity=".7"/>
+  <!-- Right bowl - food -->
+  <ellipse cx="78" cy="68" rx="16" ry="5" fill="#E8B84B"/>
+  <ellipse cx="78" cy="67" rx="12" ry="3" fill="#F5D070"/>
+  <!-- Kibble pieces in right bowl -->
+  <circle cx="74" cy="67" r="2" fill="#C8941A"/>
+  <circle cx="79" cy="66" r="2" fill="#C8941A"/>
+  <circle cx="82" cy="68" r="2" fill="#C8941A"/>
+  <circle cx="76" cy="69" r="1.5" fill="#E8B84B"/>
+  <!-- Shine on steel frame -->
+  <line x1="25" y1="68" x2="30" y2="68" stroke="#fff" stroke-width="2" opacity=".3"/>
+  <line x1="90" y1="68" x2="95" y2="68" stroke="#fff" stroke-width="2" opacity=".3"/>
+</svg>

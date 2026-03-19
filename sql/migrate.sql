@@ -1,25 +1,37 @@
 -- MeowMart Migration Script
--- Run this if you already imported meowmart.sql before the orders feature was added.
--- It is SAFE to run on an existing database — it will NOT drop or overwrite any existing data.
+-- Run this if you already imported meowmart.sql before newer features were added.
 -- Usage: mysql -u root -p meowmart < sql/migrate.sql
 
 USE meowmart;
 
--- ─── ORDERS ──────────────────────────────────────────────────────────────────
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS referred_by VARCHAR(50) DEFAULT NULL AFTER address,
+    ADD COLUMN IF NOT EXISTS wishlist_json LONGTEXT DEFAULT NULL AFTER referred_by,
+    ADD COLUMN IF NOT EXISTS cart_json LONGTEXT DEFAULT NULL AFTER wishlist_json;
+
 CREATE TABLE IF NOT EXISTS orders (
-    id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
-    user_id    INT UNSIGNED   DEFAULT NULL,
-    name       VARCHAR(120)   NOT NULL,
-    email      VARCHAR(180)   NOT NULL,
-    address    TEXT           NOT NULL,
-    payment    VARCHAR(30)    NOT NULL DEFAULT 'card',
-    total      DECIMAL(10,2)  NOT NULL,
-    status     ENUM('confirmed','shipped','delivered','cancelled') NOT NULL DEFAULT 'confirmed',
-    created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
+    id                INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
+    user_id           INT UNSIGNED   DEFAULT NULL,
+    name              VARCHAR(120)   NOT NULL,
+    email             VARCHAR(180)   NOT NULL,
+    address           TEXT           NOT NULL,
+    payment           VARCHAR(30)    NOT NULL DEFAULT 'card',
+    payment_reference VARCHAR(120)   DEFAULT NULL,
+    coupon_code       VARCHAR(50)    DEFAULT NULL,
+    referral_code     VARCHAR(50)    DEFAULT NULL,
+    discount          DECIMAL(10,2)  NOT NULL DEFAULT 0.00,
+    total             DECIMAL(10,2)  NOT NULL,
+    status            ENUM('confirmed','shipped','delivered','cancelled') NOT NULL DEFAULT 'confirmed',
+    created_at        TIMESTAMP      DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- ─── ORDER ITEMS ─────────────────────────────────────────────────────────────
+ALTER TABLE orders
+    ADD COLUMN IF NOT EXISTS payment_reference VARCHAR(120) DEFAULT NULL AFTER payment,
+    ADD COLUMN IF NOT EXISTS coupon_code VARCHAR(50) DEFAULT NULL AFTER payment_reference,
+    ADD COLUMN IF NOT EXISTS referral_code VARCHAR(50) DEFAULT NULL AFTER coupon_code,
+    ADD COLUMN IF NOT EXISTS discount DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER referral_code;
+
 CREATE TABLE IF NOT EXISTS order_items (
     id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     order_id   INT UNSIGNED   NOT NULL,
@@ -31,7 +43,6 @@ CREATE TABLE IF NOT EXISTS order_items (
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
 );
 
--- ─── CONTACT MESSAGES ────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS contact_messages (
     id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(120)   NOT NULL,
@@ -42,9 +53,8 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
-SELECT 'Migration complete — orders, order_items, and contact_messages tables are ready.' AS status;
+SELECT 'Migration complete — order tracking, vouchers, referrals, payment details, and saved carts are ready.' AS status;
 
--- ─── SESSION DATA (Zebra_Session) ─────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS `session_data` (
     `session_id`      VARCHAR(128)     NOT NULL,
     `session_data`    BLOB             NOT NULL,

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <!-- Wand stick -->
+  <rect x="82" y="18" width="10" height="80" rx="5" fill="#C8941A"/>
+  <rect x="84" y="18" width="4" height="80" rx="2" fill="#E8B84B"/>
+  <!-- String -->
+  <path d="M87 28 Q55 45 38 38 Q25 32 28 20" stroke="#3D2314" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+  <!-- Feathers -->
+  <ellipse cx="30" cy="18" rx="8" ry="18" fill="#E8651A" transform="rotate(-20 30 18)"/>
+  <ellipse cx="30" cy="18" rx="5" ry="14" fill="#F5924E" transform="rotate(-20 30 18)"/>
+  <ellipse cx="22" cy="22" rx="7" ry="16" fill="#C8941A" transform="rotate(10 22 22)"/>
+  <ellipse cx="22" cy="22" rx="4" ry="12" fill="#E8B84B" transform="rotate(10 22 22)"/>
+  <ellipse cx="40" cy="15" rx="6" ry="14" fill="#3D2314" transform="rotate(-35 40 15)"/>
+  <ellipse cx="40" cy="15" rx="3.5" ry="10" fill="#6B3C22" transform="rotate(-35 40 15)"/>
+  <!-- String end -->
+  <circle cx="87" cy="28" r="4" fill="#3D2314"/>
+</svg>

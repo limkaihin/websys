@@ -3,14 +3,31 @@ $pageTitle = 'The MeowMart Blog';
 require_once dirname(__DIR__) . '/includes/header.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 $pdo = db();
-$posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetchAll();
+$tag = trim((string)($_GET['tag'] ?? ''));
+if ($tag !== '') {
+    $stmt = $pdo->prepare('SELECT * FROM blog_posts WHERE tag = ? ORDER BY created_at DESC');
+    $stmt->execute([$tag]);
+    $posts = $stmt->fetchAll();
+} else {
+    $posts = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC')->fetchAll();
+}
 $tagColors = ['Nutrition'=>'🥗','Play'=>'🧶','Grooming'=>'✂️','Health'=>'💊','Lifestyle'=>'🏠','Training'=>'🎯'];
+$allTags = ['Nutrition','Play','Grooming','Health','Lifestyle','Training'];
 ?>
 
 <section class="blog">
   <div class="section-header">
     <div class="section-tag">📖 The MeowMart Blog</div>
     <h1 class="section-title">Tips, Stories & <em>Cat Wisdom</em></h1>
+  </div>
+
+  <div style="padding:0 5% 24px;display:flex;gap:10px;flex-wrap:wrap;max-width:1200px;margin:0 auto;">
+    <a class="pill <?= $tag === '' ? 'active' : '' ?>" href="<?= h(base_url('content/blog.php')) ?>" style="text-decoration:none;">All Posts</a>
+    <?php foreach ($allTags as $t): ?>
+      <a class="pill <?= $tag === $t ? 'active' : '' ?>" href="<?= h(base_url('content/blog.php?tag=' . urlencode($t))) ?>" style="text-decoration:none;">
+        <?= ($tagColors[$t] ?? '🐱') . ' ' . h($t) ?>
+      </a>
+    <?php endforeach; ?>
   </div>
 
   <?php if (empty($posts)): ?>
