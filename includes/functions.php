@@ -72,9 +72,46 @@ function base_url(string $path = ''): string
     return $path === '' ? ($base ?: '') : $base . '/' . $path;
 }
 
+function normalize_display_text(?string $text): string
+{
+    $text = (string)$text;
+    if ($text === '') {
+        return '';
+    }
+
+    $replacements = [
+        'PÃ¢tÃ©' => 'Pate',
+        'Pâté' => 'Pate',
+        'P-ót|®' => 'Pate',
+        'ÔÇô' => '-',
+        'â€“' => '-',
+        '–' => '-',
+        '—' => '-',
+        'ÔÇÖ' => "'",
+        'â€™' => "'",
+        '’' => "'",
+        'ÔÇ£' => '"',
+        'ÔÇØ' => '"',
+        'â€œ' => '"',
+        'â€' => '"',
+        '“' => '"',
+        '”' => '"',
+        'Â®' => '®',
+        '®' => '®',
+        'Ã©' => 'e',
+        'Ã¨' => 'e',
+        'Ãª' => 'e',
+        'Ã¢' => 'a',
+        'Ã' => '',
+        'Â' => '',
+    ];
+
+    return strtr($text, $replacements);
+}
+
 function h(?string $v): string
 {
-    return htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(normalize_display_text((string)$v), ENT_QUOTES, 'UTF-8');
 }
 
 function redirect(string $path): void

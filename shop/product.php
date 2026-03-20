@@ -85,7 +85,7 @@ $related = $relStmt->fetchAll();
         </div>
         <span style="font-size:.85rem;color:var(--brown-md);">(<?= $count ?> reviews)</span>
         <?php if (wishlist_has((int)$p['id'])): ?>
-          <span style="font-size:.82rem;color:var(--orange);">❤️ In your wishlist</span>
+          <span data-wishlist-indicator style="font-size:.82rem;color:var(--orange);">❤️ In your wishlist</span>
         <?php endif; ?>
       </div>
 

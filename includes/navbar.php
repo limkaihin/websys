@@ -22,7 +22,6 @@ if ($user) {
 
   <ul class="nav-links list-unstyled mb-0" role="list">
     <li><a href="<?= h(base_url('shop/products.php')) ?>"><i class="fa-solid fa-store fa-xs"></i> Shop</a></li>
-    <li><a href="<?= h(base_url('shop/categories.php')) ?>"><i class="fa-solid fa-border-all fa-xs"></i> Categories</a></li>
     <li><a href="<?= h(base_url('index.php')) ?>#membership"><i class="fa-solid fa-crown fa-xs"></i> Membership</a></li>
     <li><a href="<?= h(base_url('content/blog.php')) ?>"><i class="fa-solid fa-newspaper fa-xs"></i> Blog</a></li>
     <li><a href="<?= h(base_url('content/about.php')) ?>"><i class="fa-solid fa-circle-info fa-xs"></i> About</a></li>
@@ -141,9 +140,6 @@ if ($user) {
     <div class="drawer-section-label">Browse</div>
     <a href="<?= h(base_url('shop/products.php')) ?>" class="drawer-link">
       <span class="drawer-icon"><i class="fa-solid fa-store"></i></span>Shop
-    </a>
-    <a href="<?= h(base_url('shop/categories.php')) ?>" class="drawer-link">
-      <span class="drawer-icon"><i class="fa-solid fa-border-all"></i></span>Categories
     </a>
     <a href="<?= h(base_url('shop/search.php')) ?>" class="drawer-link">
       <span class="drawer-icon"><i class="fa-solid fa-magnifying-glass"></i></span>Search

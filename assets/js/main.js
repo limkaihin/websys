@@ -171,8 +171,9 @@ document.addEventListener('DOMContentLoaded', function () {
     if (detailSummary && currentForm.getAttribute('data-ajax-wishlist') === 'detail') {
       var ratingRow = detailSummary.querySelector('.detail-rating-row');
       if (ratingRow) {
-        var existing = ratingRow.querySelector('[data-wishlist-indicator]');
-        if (existing) existing.remove();
+        ratingRow.querySelectorAll('[data-wishlist-indicator]').forEach(function (node) {
+          node.remove();
+        });
         if (currentButton.classList.contains('active')) {
           var indicator = document.createElement('span');
           indicator.setAttribute('data-wishlist-indicator', '');

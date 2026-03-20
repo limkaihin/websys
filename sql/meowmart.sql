@@ -98,21 +98,21 @@ INSERT INTO users (name, email, cat_name, password, role) VALUES
 
 -- ─── DEMO PRODUCTS ───────────────────────────────────────────────────────────
 INSERT INTO products (name, category, price, description, is_featured) VALUES
-('Grain-Free Salmon Pâté for Adult Cats',   'Food',        14.90, 'Premium grain-free wet food packed with real salmon. Rich in omega-3, gentle on digestion. 400g per can.', 1),
+('Grain-Free Salmon Pate for Adult Cats',   'Food',        14.90, 'Premium grain-free wet food packed with real salmon. Rich in omega-3, gentle on digestion. 400g per can.', 1),
 ('Ultra Clumping Lavender Cat Litter 8kg',  'Litter',      22.50, 'Superior clumping formula with natural lavender scent. Low dust, easy to scoop, long-lasting freshness.', 1),
 ('Interactive Feather Wand & Refill Set',   'Toys',         9.90, 'Entices natural hunting instincts with rustling feathers. Includes 3 refill attachments. Safe for all ages.', 1),
 ('Reversible Floral Bow Tie & Collar Set',  'Apparel',     12.00, 'Adjustable collar with a removable reversible bow tie. Soft velvet fabric, secure buckle, breakaway safety clasp.', 1),
 ('Freeze-Dried Chicken Treats 100g',        'Food',        11.50, 'Single-ingredient freeze-dried chicken treats. No additives, preservatives, or fillers. Irresistible to cats.', 0),
 ('Enclosed Self-Cleaning Litter Box',       'Litter',      89.00, 'Spacious enclosed litter box with a carbon filter and easy-pull drawer for effortless cleaning.', 0),
 ('Electronic Laser Chase Auto Toy',         'Toys',        34.90, 'Automatic rotating laser toy with 5 speed modes and auto-off timer. Keeps cats entertained for hours.', 0),
-('Velvet Holiday Hoodie – Multiple Sizes',  'Apparel',     19.90, 'Cosy velvet hoodie perfect for festive photos. Available in XS to L. Washable and skin-safe material.', 0),
+('Velvet Holiday Hoodie - Multiple Sizes',  'Apparel',     19.90, 'Cosy velvet hoodie perfect for festive photos. Available in XS to L. Washable and skin-safe material.', 0),
 ('Gourmet Tuna & Prawn Mousse 12-pack',     'Food',        28.80, 'Silky smooth mousse with real tuna and prawn pieces. High moisture content supports urinary health.', 0),
-('Natural Tofu Cat Litter 6L',              'Litter',      16.50, 'Plant-based tofu litter — flushable, biodegradable, and ultra-absorbent. Odour-neutral formula.', 0),
+('Natural Tofu Cat Litter 6L',              'Litter',      16.50, 'Plant-based tofu litter - flushable, biodegradable, and ultra-absorbent. Odour-neutral formula.', 0),
 ('Multi-Level Cat Tree & Scratching Post',  'Accessories', 68.00, 'Sturdy sisal-wrapped posts with plush platforms, a dangling toy, and a cosy enclosed nest.', 0),
 ('Stainless Steel Double-Bowl Feeder',      'Accessories', 22.00, 'Elevated anti-spill feeder with removable stainless bowls. Improves posture during meal times.', 0),
 ('Faux-Fur Donut Cat Bed (Large)',          'Accessories', 45.00, 'Ultra-plush self-warming donut bed. Non-slip base, machine-washable cover, 55cm diameter.', 0),
 ('Catnip & Silver-vine Crinkle Balls',      'Toys',         8.90, 'Crinkle balls infused with catnip and silver vine. Lightweight, rattle inside, safe for solo play.', 0),
-('Waterproof Sailor Raincoat – S/M/L',      'Apparel',     24.90, 'Lightweight waterproof raincoat with hood and velcro fastenings. Reflective strip for night walks.', 0);
+('Waterproof Sailor Raincoat - S/M/L',      'Apparel',     24.90, 'Lightweight waterproof raincoat with hood and velcro fastenings. Reflective strip for night walks.', 0);
 
 -- ─── DEMO BLOG POSTS ─────────────────────────────────────────────────────────
 INSERT INTO blog_posts (title, tag, author, excerpt, content) VALUES

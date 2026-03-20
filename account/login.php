@@ -4,36 +4,35 @@ require_once dirname(__DIR__) . '/includes/db.php';
 
 if (is_logged_in()) redirect('index.php');
 
-// ── POST processing BEFORE any output ────────────────────────────────────────
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     verify_csrf();
-    $email    = post('email');
+    $email = post('email');
     $password = post('password');
 
     if (!$email || !$password) {
         $errors['form'] = 'Please enter your email and password.';
     } else {
-        $pdo  = db();
+        $pdo = db();
         $stmt = $pdo->prepare('SELECT * FROM users WHERE email = ?');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            session_regenerate_id(true);   // safe — no output yet
+            session_regenerate_id(true);
             $_SESSION['user'] = [
-                'id'       => $user['id'],
-                'name'     => $user['name'],
-                'email'    => $user['email'],
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
                 'cat_name' => $user['cat_name'],
-                'role'     => $user['role'],
+                'role' => $user['role'],
             ];
             unset($_SESSION['_user_collection_state_loaded']);
             ensure_user_collection_state_loaded();
             persist_user_collection_state();
             clear_old();
             set_flash('success', 'Welcome back, ' . $user['name'] . '! 🐾');
-            redirect('index.php');         // safe — no output yet
+            redirect('index.php');
         } else {
             $errors['form'] = 'Incorrect email or password.';
             store_old(['email' => $email]);
@@ -41,52 +40,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ── Output starts here ────────────────────────────────────────────────────────
 $pageTitle = 'Log In';
 require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 
-<div class="membership auth-shell" id="membership">
-  <div class="membership-left">
-    <h2>Welcome Back to <em>MeowMart</em></h2>
-    <p>Log in to access your MeowClub perks, track orders, earn Pawpoints, and shop with your saved details.</p>
-    <div class="membership-perks">
-      <div class="perk"><div class="icon"><i class="fa-solid fa-gift"></i></div><div class="text"><strong>Your Pawpoints</strong><span>Check your balance &amp; rewards</span></div></div>
-      <div class="perk"><div class="icon"><i class="fa-solid fa-box-open"></i></div><div class="text"><strong>Order History</strong><span>Track and reorder easily</span></div></div>
-      <div class="perk"><div class="icon"><i class="fa-solid fa-cat"></i></div><div class="text"><strong>Cat Profile</strong><span>Personalised picks for your cat</span></div></div>
+<section class="auth-page container">
+  <div class="row g-4 align-items-stretch">
+    <div class="col-lg-6">
+      <div class="auth-info-card h-100">
+        <p class="auth-eyebrow">MeowClub</p>
+        <h1>Welcome back</h1>
+        <p>Log in to track orders, view your wishlist, keep your cart, and enjoy your MeowClub perks.</p>
+
+        <div class="auth-feature-list" role="list">
+          <div class="auth-feature-item" role="listitem">
+            <div class="auth-feature-icon"><i class="fa-solid fa-gift"></i></div>
+            <div><strong>Your Pawpoints</strong><span>Check your rewards and member perks.</span></div>
+          </div>
+          <div class="auth-feature-item" role="listitem">
+            <div class="auth-feature-icon"><i class="fa-solid fa-box-open"></i></div>
+            <div><strong>Order history</strong><span>Review past purchases and reorder faster.</span></div>
+          </div>
+          <div class="auth-feature-item" role="listitem">
+            <div class="auth-feature-icon"><i class="fa-solid fa-heart"></i></div>
+            <div><strong>Wishlist and cart</strong><span>Pick up where you left off on any device.</span></div>
+          </div>
+        </div>
+
+        <div class="auth-demo-box">
+          <strong>Demo accounts</strong><br>
+          admin@meowmart.test / password<br>
+          member@meowmart.test / password
+        </div>
+      </div>
     </div>
-    <p style="color:var(--blush);font-size:.82rem;margin-top:20px;">
-      Demo credentials:<br>
-      admin@meowmart.test / password<br>
-      member@meowmart.test / password
-    </p>
-  </div>
-  <div class="membership-right">
-    <h3>Log In to Your Account</h3>
-    <?php if (!empty($errors['form'])): ?>
-      <p style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:10px;
-                padding:10px 16px;color:#fca5a5;font-size:.88rem;margin-bottom:16px;" role="alert">
-        <?= h($errors['form']) ?>
-      </p>
-    <?php endif; ?>
-    <form method="POST" novalidate>
-      <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
-      <div class="form-field">
-        <label for="li-email"><i class="fa-solid fa-envelope fa-xs"></i> Email Address</label>
-        <input id="li-email" type="email" name="email" value="<?= old('email') ?>"
-               placeholder="you@example.com" required autocomplete="email"/>
+
+    <div class="col-lg-6">
+      <div class="auth-form-card h-100">
+        <h2>Log In</h2>
+        <p class="auth-helper-text">Use your registered email address and password.</p>
+
+        <?php if (!empty($errors['form'])): ?>
+          <div class="alert alert-danger" role="alert"><?= h($errors['form']) ?></div>
+        <?php endif; ?>
+
+        <form method="POST" novalidate>
+          <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
+
+          <div class="mb-3">
+            <label for="li-email" class="form-label">Email Address</label>
+            <input id="li-email" type="email" name="email" value="<?= old('email') ?>" class="form-control" placeholder="you@example.com" required autocomplete="email">
+          </div>
+
+          <div class="mb-3">
+            <label for="li-pw" class="form-label">Password</label>
+            <input id="li-pw" type="password" name="password" class="form-control" placeholder="Your password" required autocomplete="current-password">
+          </div>
+
+          <button class="btn meow-btn-primary w-100" type="submit"><i class="fa-solid fa-right-to-bracket me-2"></i>Log In</button>
+          <p class="auth-note">Not a member yet? <a href="<?= h(base_url('account/register.php')) ?>">Join MeowClub free →</a></p>
+        </form>
       </div>
-      <div class="form-field">
-        <label for="li-pw"><i class="fa-solid fa-lock fa-xs"></i> Password</label>
-        <input id="li-pw" type="password" name="password"
-               placeholder="Your password" required autocomplete="current-password"/>
-      </div>
-      <button class="btn-join" type="submit"><i class="fa-solid fa-right-to-bracket"></i> Log In</button>
-      <p class="form-note">Not a member yet?
-        <a href="<?= h(base_url('account/register.php')) ?>" style="color:var(--blush);">Join MeowClub free →</a>
-      </p>
-    </form>
+    </div>
   </div>
-</div>
+</section>
 
 <?php require_once dirname(__DIR__) . '/includes/footer.php'; ?>
