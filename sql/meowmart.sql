@@ -124,16 +124,16 @@ INSERT INTO blog_posts (title, tag, author, excerpt, content) VALUES
   'Cats are obligate carnivores, which means their bodies are designed to thrive on animal protein. Unlike dogs or humans, cats cannot synthesise certain nutrients on their own and must obtain them directly from meat.
 
 When choosing a cat food, look for:
-• Named protein source as the first ingredient (e.g. salmon, chicken, tuna)
-• High moisture content — wet food closely mimics a cat''s natural prey diet
-• No artificial colours, flavours, or preservatives
-• AAFCO or similar certification for nutritional completeness
+- Named protein source as the first ingredient (e.g. salmon, chicken, tuna)
+- High moisture content - wet food closely mimics a cat''s natural prey diet
+- No artificial colours, flavours, or preservatives
+- AAFCO or similar certification for nutritional completeness
 
-Dry food can be convenient, but it is low in moisture (around 10%). If your cat eats primarily dry food, ensure they drink plenty of water — a cat water fountain can help encourage hydration.
+Dry food can be convenient, but it is low in moisture (around 10%). If your cat eats primarily dry food, ensure they drink plenty of water - a cat water fountain can help encourage hydration.
 
 Feeding schedule: Most adult cats do well with 2 measured meals per day. Free-feeding dry food can lead to obesity, especially in indoor cats.
 
-Always transition to new food gradually over 7–10 days to avoid digestive upset. Mix increasing amounts of the new food with the old.
+Always transition to new food gradually over 7-10 days to avoid digestive upset. Mix increasing amounts of the new food with the old.
 
 Treats should make up no more than 10% of daily calories. Freeze-dried single-ingredient treats are a healthy choice.'
 ),
@@ -144,16 +144,16 @@ Treats should make up no more than 10% of daily calories. Freeze-dried single-in
   'Our team tested 30+ toys with real cats. Here are the clear winners that kept them engaged longest.',
   'Not all cat toys are created equal. After months of testing with our feline panel, here are the toys that genuinely hold a cat''s attention.
 
-1. Feather Wand — mimics bird movement, triggers hunting instinct
-2. Electronic Laser Toy — random patterns prevent cats from predicting movement
-3. Silver Vine Crinkle Balls — silver vine is more potent than catnip for many cats
-4. Puzzle Feeders — slow feeding while stimulating the brain
-5. Robotic Mouse — realistic scurrying motion
-6. Tunnel with Crinkle Material — cats love the sound and the hiding opportunity
-7. Catnip Kicker — long enough for cats to bunny-kick, satisfying for full-body play
-8. Wand with Interchangeable Heads — keeps playtime varied
-9. Window Bird Feeder (mounted outside) — free entertainment!
-10. Cardboard Boxes — the classic, always effective
+1. Feather Wand - mimics bird movement, triggers hunting instinct
+2. Electronic Laser Toy - random patterns prevent cats from predicting movement
+3. Silver Vine Crinkle Balls - silver vine is more potent than catnip for many cats
+4. Puzzle Feeders - slow feeding while stimulating the brain
+5. Robotic Mouse - realistic scurrying motion
+6. Tunnel with Crinkle Material - cats love the sound and the hiding opportunity
+7. Catnip Kicker - long enough for cats to bunny-kick, satisfying for full-body play
+8. Wand with Interchangeable Heads - keeps playtime varied
+9. Window Bird Feeder (mounted outside) - free entertainment!
+10. Cardboard Boxes - the classic, always effective
 
 Key takeaway: rotate toys weekly to prevent boredom. Even the best toy loses novelty quickly.'
 ),
@@ -161,14 +161,14 @@ Key takeaway: rotate toys weekly to prevent boredom. Even the best toy loses nov
   'How to Groom Your Cat at Home Without the Drama',
   'Grooming',
   'Mei Lin',
-  'Step-by-step guide for nail trimming, brushing, and even bathing a reluctant cat — without battle scars.',
+  'Step-by-step guide for nail trimming, brushing, and even bathing a reluctant cat - without battle scars.',
   'Many cats resist grooming because they associate it with restraint and discomfort. The secret is to start slow and make it a positive experience from kittenhood.
 
 Brushing
-Start with a soft-bristle brush and short sessions of 2–3 minutes. Gradually increase duration. Brush in the direction of fur growth. Reward with treats immediately after.
+Start with a soft-bristle brush and short sessions of 2-3 minutes. Gradually increase duration. Brush in the direction of fur growth. Reward with treats immediately after.
 
 Nail Trimming
-Use proper cat nail clippers — never scissors. Expose one nail at a time by gently pressing the paw pad. Cut only the clear tip, avoiding the pink quick. If your cat resists, trim one nail per day across a week.
+Use proper cat nail clippers - never scissors. Expose one nail at a time by gently pressing the paw pad. Cut only the clear tip, avoiding the pink quick. If your cat resists, trim one nail per day across a week.
 
 Ear Cleaning
 Use a vet-approved ear cleaner and cotton balls (never cotton buds). Gently wipe the outer ear flap only. A healthy ear is light pink inside with minimal odour.
@@ -182,7 +182,7 @@ Always end every grooming session with play or treats to build a positive associ
 -- ─────────────────────────────────────────────────────────────────────────────
 SELECT 'MeowMart database installed successfully.' AS status;
 
--- ─── SESSION DATA (Zebra_Session – Open Source Project #5) ───────────────────
+-- ─── SESSION DATA (Zebra_Session - Open Source Project #5) ───────────────────
 -- This table is auto-created by Zebra_Session at runtime, but we include
 -- it here so a fresh import is fully self-contained.
 CREATE TABLE IF NOT EXISTS `session_data` (
