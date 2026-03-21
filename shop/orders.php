@@ -16,6 +16,11 @@ $orders        = [];
 $tablesMissing = false;
 
 try {
+    if (!empty($user['id']) && !empty($user['email'])) {
+        $adoptStmt = $pdo->prepare('UPDATE orders SET user_id = ? WHERE user_id IS NULL AND LOWER(email) = LOWER(?)');
+        $adoptStmt->execute([(int)$user['id'], (string)$user['email']]);
+    }
+
     $sql    = 'SELECT o.*, COUNT(oi.id) AS item_count FROM orders o
                LEFT JOIN order_items oi ON oi.order_id = o.id
                WHERE o.user_id = ?';

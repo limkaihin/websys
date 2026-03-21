@@ -22,7 +22,17 @@ try {
     }
 
     $user = current_user();
-    if ($order['user_id'] && (!$user || ((int)$user['id'] !== (int)$order['user_id'] && !is_admin()))) {
+    if ($user && empty($order['user_id']) && !empty($order['email']) && strcasecmp((string)$order['email'], (string)($user['email'] ?? '')) === 0) {
+        $pdo->prepare('UPDATE orders SET user_id = ? WHERE id = ?')->execute([(int)$user['id'], $orderId]);
+        $order['user_id'] = (int)$user['id'];
+    }
+
+    if (!$user && !empty($order['user_id'])) {
+        set_flash('error', 'Please log in to view your order details.');
+        redirect('account/login.php');
+    }
+
+    if (!empty($order['user_id']) && (!$user || ((int)$user['id'] !== (int)$order['user_id'] && !is_admin()))) {
         set_flash('error', 'You do not have permission to view this order.');
         redirect('index.php');
     }

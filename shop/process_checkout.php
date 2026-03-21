@@ -2,6 +2,8 @@
 require_once dirname(__DIR__) . '/includes/functions.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
+require_login();
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('shop/checkout.php');
 }
@@ -38,7 +40,21 @@ if ($couponCode !== '' && $couponInfo['error'] !== '') {
 $paymentReference = '';
 if ($payment === 'card') {
     $cardNumber = preg_replace('/\D+/', '', (string)($_POST['card_number'] ?? ''));
-    $paymentReference = $cardNumber ? 'Card ending ' . substr($cardNumber, -4) : 'Card payment';
+    $cardExpiry = trim((string)($_POST['card_expiry'] ?? ''));
+    $cardCvv = preg_replace('/\D+/', '', (string)($_POST['card_cvv'] ?? ''));
+    if (!preg_match('/^\d{16}$/', $cardNumber)) {
+        set_flash('error', 'Card number must be exactly 16 digits.');
+        redirect('shop/checkout.php');
+    }
+    if (!preg_match('/^(0[1-9]|1[0-2])\/(\d{2})$/', $cardExpiry)) {
+        set_flash('error', 'Use MM/YY format for the card expiry date.');
+        redirect('shop/checkout.php');
+    }
+    if (!preg_match('/^\d{3}$/', $cardCvv)) {
+        set_flash('error', 'CVV must be exactly 3 digits.');
+        redirect('shop/checkout.php');
+    }
+    $paymentReference = 'Card ending ' . substr($cardNumber, -4);
 } elseif ($payment === 'paynow') {
     $paynowPhone = preg_replace('/\D+/', '', (string)($_POST['paynow_phone'] ?? ''));
     $paymentReference = $paynowPhone ? 'PayNow ' . $paynowPhone : 'PayNow payment';

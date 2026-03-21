@@ -1,205 +1,85 @@
 # MeowMart
 
-MeowMart is a responsive PHP + MySQL cat e-commerce website built in a simple lab-style structure. It supports browsing products, searching and filtering, user accounts, wishlist, cart, checkout, blog posts, member pages, and a basic admin area.
+MeowMart is a responsive PHP and MySQL cat e-commerce website built for the INF1005 web systems project. The site is intended to be deployed on a Google Cloud LAMP server and demonstrates a data-driven online store with user accounts, product browsing, cart and wishlist features, checkout, order history, blog content, and admin support.
 
-## What this project does
+## Project features
 
-### Customer-facing features
-- Home page with hero section, featured products, membership section, and latest blog posts
-- Product listing page with:
-  - category filter pills
-  - product search
-  - sorting by name, price, and newest
-- Product detail pages
-- Wishlist
-- Shopping cart
-- Checkout flow
-- Order confirmation and order history
-- Account registration and login
-- User profile page
-- Blog listing and blog post pages
-- About, Contact, Help, and MeowClub content pages
+- Responsive layout for desktop and mobile
+- User registration, login, logout, and profile pages
+- Product catalogue with category filtering and search
+- Wishlist and shopping cart
+- Checkout with demo card, PayNow, and Google Pay flows
+- Voucher code support for `MEOW10`
+- Referral code entry during registration and checkout
+- Orders saved to the logged-in user account
+- Order history and order confirmation pages
+- Blog, help, about, contact, and MeowClub pages
+- Admin pages for managing site content and data
 
-### Demo features included in the code
-- Referral code field during account registration
-- Voucher code field at checkout (`MEOW10`)
-- Demo payment options at checkout:
-  - Credit / Debit Card
-  - PayNow
-  - Google Pay
-- Persistent cart and wishlist for logged-in users
-- Flash messages for actions such as login, registration, wishlist updates, and checkout
+## Deployment target
 
-### Admin-facing features
-- Admin dashboard
-- Product management pages
-- Blog post management pages
-- Order management page
-- User listing page
-- Contact/message listing page
+This project is designed to run on a **Google Cloud LAMP server** using:
 
-## Tech stack
+- Apache
 - PHP
-- MySQL / MariaDB
-- HTML5
-- CSS
-- Bootstrap 5
-- JavaScript
-- Font Awesome
+- MySQL
 
-## Project structure
+## Main project folders
 
-```text
-admin/          Admin pages
-account/        Login, register, logout, profile
-assets/         CSS, JavaScript, images, icons
-blog/           Compatibility routes for blog pages
-config/         Configuration files
-content/        About, Contact, Blog, Help, MeowClub pages
-inc/            Compatibility include files
-includes/       Shared helpers, DB connection, header, footer, navbar
-php/            Bundled PHP for Windows local running
-shop/           Products, product details, cart, wishlist, checkout, orders
-sql/            Database SQL files
-vendor/         Third-party PHP libraries used by the project
-index.php       Home page
-run-local.ps1   Start local server with bundled PHP (PowerShell)
-run-local.bat   Start local server with bundled PHP (Command Prompt)
-```
+- `account/` - login, register, logout, and profile pages
+- `admin/` - admin-facing pages
+- `assets/` - CSS, JavaScript, icons, and image assets
+- `blog/` - blog listing and post pages
+- `config/` - project configuration
+- `content/` - static content pages such as about, help, contact, and MeowClub
+- `includes/` - shared PHP helpers, layout files, and utility functions
+- `shop/` - products, cart, wishlist, checkout, orders, and search
+- `sql/` - database schema and migration files
+- `vendor/` - third-party PHP dependencies used by the project
 
-## Requirements
-- Windows with VS Code, XAMPP, Laragon, WAMP, or another PHP + MySQL setup
-- PHP 8.x
-- MySQL or MariaDB
-- A web browser
+## Database setup
 
-## Local setup
-
-### 1. Extract the project
-Extract the project zip and open the project folder in VS Code.
-
-### 2. Create the database
-Create a database named `meowmart`.
-
-Example SQL:
+Import the main schema file into MySQL:
 
 ```sql
-DROP DATABASE IF EXISTS meowmart;
-CREATE DATABASE meowmart CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+SOURCE sql/meowmart.sql;
 ```
 
-### 3. Import the SQL file
-Import:
+If the database already exists and only new columns or tables are needed, run:
 
-```text
-sql/meowmart.sql
+```sql
+SOURCE sql/migrate.sql;
 ```
 
-You can do this in MySQL Workbench, phpMyAdmin, or the MySQL command line.
+## Configuration
 
-### 4. Update database config
-Edit:
+Update `config/config.php` with the correct values for your deployment environment, especially:
 
-```text
-config/config.php
-```
-
-Make sure these values match your local MySQL setup:
-
-```php
-'db_host' => '127.0.0.1',
-'db_name' => 'meowmart',
-'db_user' => 'root',
-'db_pass' => '',
-```
-
-If you are running the site from the project root with `php -S`, leave:
-
-```php
-'base_url' => '',
-```
-
-### 5. Start the site
-
-#### Option A: bundled PHP in this project
-PowerShell:
-
-```powershell
-./run-local.ps1
-```
-
-Command Prompt:
-
-```bat
-run-local.bat
-```
-
-#### Option B: your own PHP installation
-From the project root:
-
-```bash
-php -S 127.0.0.1:8000
-```
-
-Then open:
-
-```text
-http://127.0.0.1:8000
-```
+- database host
+- database name
+- database username
+- database password
+- `base_url` for your Google Cloud deployment
 
 ## Demo accounts
 
-### Member account
-- Email: `member@meowmart.test`
-- Password: `password`
+- Admin: `admin@meowmart.test` / `password`
+- Member: `member@meowmart.test` / `password`
 
-### Admin account
-- Email: `admin@meowmart.test`
-- Password: `password`
+## Notes about implemented behaviour
 
-## Main routes
-- `/index.php` - home page
-- `/shop/products.php` - all products
-- `/shop/product.php?id=...` - product details
-- `/shop/search.php` - search page
-- `/shop/cart.php` - cart
-- `/shop/wishlist.php` - wishlist
-- `/shop/checkout.php` - checkout
-- `/shop/orders.php` - order history
-- `/account/register.php` - register
-- `/account/login.php` - login
-- `/account/profile.php` - profile
-- `/content/blog.php` - blog page
-- `/content/about.php` - about page
-- `/content/contact.php` - contact page
-- `/content/help.php` - help page
-- `/content/meowclub.php` - MeowClub page
-- `/admin/dashboard.php` - admin dashboard
+- Checkout requires a logged-in account so orders are attached to the correct user.
+- Existing older orders that match a logged-in user's email can be linked back to that user automatically.
+- Card checkout validates a 16-digit card number, `MM/YY` expiry, and a 3-digit CVV.
+- Homepage category counts are pulled from the actual database instead of hardcoded marketing numbers.
+- Product and blog text has been normalised to avoid broken font and encoding characters.
 
-## Notes about the current build
-- This project is designed to run as a local school/lab submission, not as a production storefront.
-- Some features are demo-style by design, especially payment flows and promotional features.
-- `shop/categories.php` is not used as a standalone categories page in this build.
-- Email sending is off by default unless SMTP is configured in `config/config.php`.
-- The `php/` folder is included for easier local running on Windows.
+## Third-party libraries used
 
-## Troubleshooting
+- Font Awesome
+- Google Fonts
+- Zebra Session
 
-### The site cannot connect to the database
-Check `config/config.php` and make sure the database name, username, and password are correct.
+## Purpose of the project
 
-### Images, CSS, or links look broken
-Make sure you are running the site from the project root and that `base_url` in `config/config.php` matches your setup.
-
-### Login works but data looks missing
-Make sure you imported `sql/meowmart.sql` into the correct `meowmart` database.
-
-### Bundled PHP does not run
-Restore the `php/` folder or use your own PHP installation with:
-
-```bash
-php -S 127.0.0.1:8000
-```
-
-## Author note
-This project was prepared as a web systems / PHP-MySQL style school project with a structure simplified to stay closer to lab-style coding patterns while still demonstrating a complete working site.
+This project demonstrates the use of HTML, CSS, Bootstrap-style responsive layout techniques, JavaScript interactions, PHP form processing, and MySQL database integration in a complete web application suitable for deployment on a cloud server.

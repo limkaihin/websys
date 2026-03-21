@@ -23,6 +23,28 @@ $featured     = $featuredStmt->fetchAll();
 $allStmt = $pdo->query('SELECT * FROM products ORDER BY is_featured DESC, id LIMIT 8');
 $allProds = $allStmt->fetchAll();
 
+// Real product counts from DB
+$countMap = [
+    'food' => 0,
+    'litter' => 0,
+    'toys' => 0,
+    'apparel' => 0,
+];
+$totalProducts = 0;
+try {
+    $countStmt = $pdo->query('SELECT LOWER(category) AS category_key, COUNT(*) AS total FROM products GROUP BY LOWER(category)');
+    foreach ($countStmt->fetchAll() as $row) {
+        $key = (string)($row['category_key'] ?? '');
+        $total = (int)($row['total'] ?? 0);
+        if (isset($countMap[$key])) {
+            $countMap[$key] = $total;
+        }
+        $totalProducts += $total;
+    }
+} catch (Throwable $e) {
+    $totalProducts = count($allProds);
+}
+
 // Blog posts
 $blogStmt = $pdo->query('SELECT * FROM blog_posts ORDER BY created_at DESC LIMIT 3');
 $posts    = $blogStmt->fetchAll();
@@ -48,7 +70,7 @@ function stable_rating_home(int $id): array {
       <a class="btn-outline" href="<?= h(base_url('account/register.php')) ?>" style="text-decoration:none;">Join MeowClub</a>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><strong>2,400+</strong><span>Products</span></div>
+      <div class="hero-stat"><strong><?= (int)$totalProducts ?></strong><span>Products</span></div>
       <div class="hero-stat"><strong>98%</strong><span>Happy Cats</span></div>
       <div class="hero-stat"><strong>Free</strong><span>Membership</span></div>
     </div>
@@ -75,12 +97,13 @@ function stable_rating_home(int $id): array {
   <div class="cat-grid">
     <?php
     $cats = [
-      ['food',        '🥩', 'Cat Food',       '340+ products'],
-      ['litter',      '🧴', 'Litter & Hygiene','120+ products'],
-      ['toys',        '🧶', 'Toys & Play',     '200+ products'],
-      ['apparel',     '👗', 'Cat Apparel',     '80+ products'],
+      ['food',        '🥩', 'Cat Food'],
+      ['litter',      '🧴', 'Litter & Hygiene'],
+      ['toys',        '🧶', 'Toys & Play'],
+      ['apparel',     '👗', 'Cat Apparel'],
     ];
-    foreach ($cats as [$slug, $icon, $label, $sub]):
+    foreach ($cats as [$slug, $icon, $label]):
+      $sub = ($countMap[$slug] ?? 0) . ' product' . (($countMap[$slug] ?? 0) === 1 ? '' : 's');
     ?>
     <a href="<?= h(base_url('shop/products.php?cat=' . $slug)) ?>"
        class="cat-card" style="text-decoration:none;" aria-label="Browse <?= $label ?>">

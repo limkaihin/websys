@@ -2,6 +2,8 @@
 require_once dirname(__DIR__) . '/includes/functions.php';
 require_once dirname(__DIR__) . '/includes/db.php';
 
+require_login();
+
 $cart     = cart_items();
 $subtotal = cart_total();
 
@@ -52,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $paymentReference = '';
     if ($payment === 'card') {
         if (strlen($cardName) < 2) $errors['card_name'] = 'Name on card is required.';
-        if (strlen($cardNumberRaw) < 12) $errors['card_number'] = 'Please enter a valid card number.';
+        if (!preg_match('/^\d{16}$/', $cardNumberRaw)) $errors['card_number'] = 'Card number must be exactly 16 digits.';
         if (!preg_match('/^(0[1-9]|1[0-2])\/(\d{2})$/', $cardExpiry)) $errors['card_expiry'] = 'Use MM/YY format.';
-        if (strlen($cardCvv) < 3 || strlen($cardCvv) > 4) $errors['card_cvv'] = 'Enter a valid CVV.';
+        if (!preg_match('/^\d{3}$/', $cardCvv)) $errors['card_cvv'] = 'CVV must be exactly 3 digits.';
         if (!isset($errors['card_number'])) {
             $paymentReference = 'Card ending ' . substr($cardNumberRaw, -4);
         }
@@ -218,19 +220,19 @@ require_once dirname(__DIR__) . '/includes/header.php';
                 </div>
                 <div class="form-field" style="margin:0;">
                   <label for="card-number">Card Number</label>
-                  <input id="card-number" type="text" name="card_number" value="" inputmode="numeric" placeholder="4242 4242 4242 4242" autocomplete="cc-number"/>
+                  <input id="card-number" type="text" name="card_number" value="" inputmode="numeric" maxlength="19" placeholder="4242 4242 4242 4242" autocomplete="cc-number"/>
                   <?php if (!empty($errors['card_number'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:6px;"><?= h($errors['card_number']) ?></p><?php endif; ?>
                 </div>
               </div>
               <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;">
                 <div class="form-field" style="margin:0;">
                   <label for="card-expiry">Expiry</label>
-                  <input id="card-expiry" type="text" name="card_expiry" value="" placeholder="MM/YY" autocomplete="cc-exp"/>
+                  <input id="card-expiry" type="text" name="card_expiry" value="" inputmode="numeric" maxlength="5" placeholder="MM/YY" autocomplete="cc-exp"/>
                   <?php if (!empty($errors['card_expiry'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:6px;"><?= h($errors['card_expiry']) ?></p><?php endif; ?>
                 </div>
                 <div class="form-field" style="margin:0;">
                   <label for="card-cvv">CVV</label>
-                  <input id="card-cvv" type="password" name="card_cvv" value="" inputmode="numeric" placeholder="123" autocomplete="cc-csc"/>
+                  <input id="card-cvv" type="password" name="card_cvv" value="" inputmode="numeric" maxlength="3" placeholder="123" autocomplete="cc-csc"/>
                   <?php if (!empty($errors['card_cvv'])): ?><p style="color:#f87171;font-size:.78rem;margin-top:6px;"><?= h($errors['card_cvv']) ?></p><?php endif; ?>
                 </div>
               </div>
@@ -330,6 +332,14 @@ document.addEventListener('DOMContentLoaded', function () {
   var discountEl = document.getElementById('summaryDiscount');
   var totalEl = document.getElementById('summaryTotal');
   var subtotal = parseFloat(subtotalEl.dataset.subtotal || '0');
+  var cardNumberInput = document.getElementById('card-number');
+  var cardExpiryInput = document.getElementById('card-expiry');
+  var cardCvvInput = document.getElementById('card-cvv');
+  var paynowPhoneInput = document.getElementById('paynow-phone');
+
+  function digitsOnly(value) {
+    return String(value || '').replace(/\D+/g, '');
+  }
 
   function money(v) {
     return '$' + Number(v).toFixed(2);
@@ -366,6 +376,36 @@ document.addEventListener('DOMContentLoaded', function () {
     discountRow.style.display = discount > 0 ? 'flex' : 'none';
     discountEl.textContent = '-' + money(discount);
     totalEl.textContent = money(subtotal - discount);
+  }
+
+  if (cardNumberInput) {
+    cardNumberInput.addEventListener('input', function () {
+      var digits = digitsOnly(cardNumberInput.value).slice(0, 16);
+      cardNumberInput.value = digits.replace(/(.{4})/g, '$1 ').trim();
+    });
+  }
+
+  if (cardExpiryInput) {
+    cardExpiryInput.addEventListener('input', function () {
+      var digits = digitsOnly(cardExpiryInput.value).slice(0, 4);
+      if (digits.length >= 3) {
+        cardExpiryInput.value = digits.slice(0, 2) + '/' + digits.slice(2);
+      } else {
+        cardExpiryInput.value = digits;
+      }
+    });
+  }
+
+  if (cardCvvInput) {
+    cardCvvInput.addEventListener('input', function () {
+      cardCvvInput.value = digitsOnly(cardCvvInput.value).slice(0, 3);
+    });
+  }
+
+  if (paynowPhoneInput) {
+    paynowPhoneInput.addEventListener('input', function () {
+      paynowPhoneInput.value = digitsOnly(paynowPhoneInput.value).slice(0, 8);
+    });
   }
 
   if (paymentSelect) {
