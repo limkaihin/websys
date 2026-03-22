@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $itemStmt = $pdo->prepare('INSERT INTO order_items (order_id, product_id, name, price, qty) VALUES (?, ?, ?, ?, ?)');
             foreach ($cart as $pid => $row) {
-                $itemStmt->execute([$orderId, (int)$pid, $row['name'], (float)$row['price'], (int)$row['qty']]);
+                $itemStmt->execute([$orderId, (int)$pid, normalize_display_text((string)$row['name']), (float)$row['price'], (int)$row['qty']]);
             }
 
             $_SESSION['order_meta'][$orderId] = [

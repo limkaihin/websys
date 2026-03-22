@@ -82,6 +82,8 @@ function normalize_display_text(?string $text): string
     $replacements = [
         'PÃ¢tÃ©' => 'Pate',
         'Pâté' => 'Pate',
+        'P├ót│®' => 'Pate',
+        'P├│t├®' => 'Pate',
         'P-ót|®' => 'Pate',
         'Pót│®' => 'Pate',
         'ÔÇó' => '- ',
@@ -114,9 +116,26 @@ function normalize_display_text(?string $text): string
         'Ã/' => '',
         'Ã' => '',
         'Â' => '',
+        '│' => '',
+        '├' => '',
+        '┤' => '',
+        '�' => '',
     ];
 
-    return strtr($text, $replacements);
+    $text = strtr($text, $replacements);
+
+    // If mojibake-looking fragments still remain, fall back to a safer plain-text display.
+    if (preg_match('/[ÃÂâÔÇ�│├┤]/u', $text)) {
+        $text = strtr($text, [
+            'Ã©' => 'e', 'Ã¨' => 'e', 'Ãª' => 'e', 'Ã¢' => 'a', 'Ã´' => 'o',
+            'â€™' => "'", 'â€œ' => '"', 'â€' => '"', 'â€“' => '-', 'â€”' => '-', 'â€¢' => '- ',
+            'ÔÇÖ' => "'", 'ÔÇ£' => '"', 'ÔÇØ' => '"', 'ÔÇó' => '- ', 'ÔÇô' => '-', 'ÔÇö' => '-',
+            '│' => '', '├' => '', '┤' => '', 'Ã' => '', 'Â' => '', '�' => '',
+        ]);
+    }
+
+    $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+    return trim($text);
 }
 
 function h(?string $v): string
@@ -235,7 +254,7 @@ function normalize_cart_data($cart): array
         }
 
         $clean[$id] = [
-            'name'  => trim((string)($row['name'] ?? '')),
+            'name'  => normalize_display_text(trim((string)($row['name'] ?? ''))),
             'price' => round((float)($row['price'] ?? 0), 2),
             'qty'   => $qty,
         ];
@@ -359,7 +378,7 @@ function cart_add_product(array $product, int $qty = 1): void
 
     if (!isset($cart[$productId])) {
         $cart[$productId] = [
-            'name'  => (string)($product['name'] ?? ''),
+            'name'  => normalize_display_text((string)($product['name'] ?? '')),
             'price' => round((float)($product['price'] ?? 0), 2),
             'qty'   => 0,
         ];

@@ -15,5 +15,4 @@
   <!-- Leaf/eco symbol -->
   <path d="M60 90 Q70 82 72 72 Q62 74 60 82 Q58 74 48 72 Q50 82 60 90 Z" fill="#8FA882"/>
   <!-- Recycling arrows hint -->
-  <text x="26" y="42" font-size="8" fill="#FAF5EE" font-weight="bold">ECO</text>
 </svg>

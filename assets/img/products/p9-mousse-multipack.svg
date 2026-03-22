@@ -16,7 +16,6 @@
   <circle cx="68" cy="61" r="3" fill="#E8651A"/>
   <!-- 12-pack badge -->
   <circle cx="72" cy="88" r="13" fill="#3D2314"/>
-  <text x="65" y="92" font-size="9" font-weight="bold" fill="#FAF5EE">12pk</text>
-  <!-- Lid line on box top -->
+<!-- Lid line on box top -->
   <line x1="34" y1="22" x2="102" y2="22" stroke="#C87030" stroke-width="1" opacity=".5"/>
 </svg>
