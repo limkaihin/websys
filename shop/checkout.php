@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $itemStmt = $pdo->prepare('INSERT INTO order_items (order_id, product_id, name, price, qty) VALUES (?, ?, ?, ?, ?)');
             foreach ($cart as $pid => $row) {
-                $itemStmt->execute([$orderId, (int)$pid, normalize_display_text((string)$row['name']), (float)$row['price'], (int)$row['qty']]);
+                $itemStmt->execute([$orderId, (int)$pid, $row['name'], (float)$row['price'], (int)$row['qty']]);
             }
 
             $_SESSION['order_meta'][$orderId] = [
@@ -114,13 +114,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             cart_clear();
             clear_old();
-            set_flash('success', 'Order #' . $orderId . ' confirmed! Thank you, ' . h($name) . '. 🐾');
+            set_flash('success', 'Order #' . $orderId . ' confirmed! Thank you, ' . normalize_display_text($name) . '. 🐾');
             redirect('shop/order_confirmation.php?id=' . $orderId);
         } catch (PDOException $e) {
             if (strpos($e->getMessage(), '1146') !== false) {
                 cart_clear();
                 clear_old();
-                set_flash('success', 'Thank you, ' . h($name) . '! Your order has been received. 🐾');
+                set_flash('success', 'Thank you, ' . normalize_display_text($name) . '! Your order has been received. 🐾');
                 redirect('index.php');
             }
             throw $e;

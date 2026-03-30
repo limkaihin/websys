@@ -85,7 +85,7 @@ $pdo->prepare('INSERT INTO orders (' . implode(', ', $columns) . ') VALUES (' . 
 $orderId = (int)$pdo->lastInsertId();
 $itemStmt = $pdo->prepare('INSERT INTO order_items (order_id, product_id, name, price, qty) VALUES (?, ?, ?, ?, ?)');
 foreach ($cart as $productId => $row) {
-    $itemStmt->execute([$orderId, (int)$productId, normalize_display_text((string)$row['name']), (float)$row['price'], (int)$row['qty']]);
+    $itemStmt->execute([$orderId, (int)$productId, $row['name'], (float)$row['price'], (int)$row['qty']]);
 }
 
 $_SESSION['order_meta'][$orderId] = [

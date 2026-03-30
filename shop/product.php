@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $qty = max(1, (int)post('qty'));
     cart_add_product($p, $qty);
-    set_flash('success', h($p['name']) . ' added to cart! 🛒');
+    set_flash('success', normalize_display_text((string)$p['name']) . ' added to cart! 🛒');
     redirect('shop/product.php?id=' . $p['id']);
 }
 

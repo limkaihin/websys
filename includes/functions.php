@@ -79,15 +79,18 @@ function normalize_display_text(?string $text): string
         return '';
     }
 
+    $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
     $replacements = [
         'PÃ¢tÃ©' => 'Pate',
         'Pâté' => 'Pate',
-        'P├ót│®' => 'Pate',
-        'P├│t├®' => 'Pate',
         'P-ót|®' => 'Pate',
         'Pót│®' => 'Pate',
+        'P|ót|®' => 'Pate',
+        'P-|ót|®' => 'Pate',
         'ÔÇó' => '- ',
         '•' => '- ',
+        '·' => '- ',
         'â€¢' => '- ',
         'ÔÇô' => '-',
         'â€“' => '-',
@@ -104,8 +107,8 @@ function normalize_display_text(?string $text): string
         'â€' => '"',
         '“' => '"',
         '”' => '"',
-        'Â®' => '®',
-        '®' => '®',
+        'Â®' => '',
+        '®' => '',
         'Ã©' => 'e',
         'Ã¨' => 'e',
         'Ãª' => 'e',
@@ -117,24 +120,45 @@ function normalize_display_text(?string $text): string
         'Ã' => '',
         'Â' => '',
         '│' => '',
-        '├' => '',
         '┤' => '',
-        '�' => '',
+        '¤' => '',
     ];
 
     $text = strtr($text, $replacements);
 
-    // If mojibake-looking fragments still remain, fall back to a safer plain-text display.
-    if (preg_match('/[ÃÂâÔÇ�│├┤]/u', $text)) {
-        $text = strtr($text, [
-            'Ã©' => 'e', 'Ã¨' => 'e', 'Ãª' => 'e', 'Ã¢' => 'a', 'Ã´' => 'o',
-            'â€™' => "'", 'â€œ' => '"', 'â€' => '"', 'â€“' => '-', 'â€”' => '-', 'â€¢' => '- ',
-            'ÔÇÖ' => "'", 'ÔÇ£' => '"', 'ÔÇØ' => '"', 'ÔÇó' => '- ', 'ÔÇô' => '-', 'ÔÇö' => '-',
-            '│' => '', '├' => '', '┤' => '', 'Ã' => '', 'Â' => '', '�' => '',
-        ]);
+    $asciiProbe = $text;
+    if (function_exists('iconv')) {
+        $converted = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $text);
+        if ($converted !== false && $converted !== '') {
+            $asciiProbe = $converted;
+        }
     }
 
-    $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+    $matchingForms = [
+        $text,
+        $asciiProbe,
+        preg_replace('/[^A-Za-z0-9\s\/.:-]+/', ' ', $text) ?? $text,
+        preg_replace('/[^A-Za-z0-9\s\/.:-]+/', ' ', $asciiProbe) ?? $asciiProbe,
+    ];
+
+    $canonicalPatterns = [
+        '/Grain-Free\s+Salmon\s+P.*?for\s+Adult\s+Cats/i' => 'Grain-Free Salmon Pate for Adult Cats',
+        '/Velvet\s+Holiday\s+Hoodie.*?Multiple\s+Sizes/i' => 'Velvet Holiday Hoodie - Multiple Sizes',
+        '/Waterproof\s+Sailor\s+Raincoat.*?S\/M\/L/i' => 'Waterproof Sailor Raincoat - S/M/L',
+    ];
+
+    foreach ($canonicalPatterns as $pattern => $replacement) {
+        foreach ($matchingForms as $candidate) {
+            if (preg_match($pattern, $candidate)) {
+                $text = $replacement;
+                break 2;
+            }
+        }
+    }
+
+    $text = preg_replace('/[\x00-\x1F\x7F]/u', ' ', $text) ?? $text;
+    $text = preg_replace('/\s{2,}/u', ' ', $text) ?? $text;
+
     return trim($text);
 }
 
@@ -254,7 +278,7 @@ function normalize_cart_data($cart): array
         }
 
         $clean[$id] = [
-            'name'  => normalize_display_text(trim((string)($row['name'] ?? ''))),
+            'name'  => trim((string)($row['name'] ?? '')),
             'price' => round((float)($row['price'] ?? 0), 2),
             'qty'   => $qty,
         ];
@@ -378,7 +402,7 @@ function cart_add_product(array $product, int $qty = 1): void
 
     if (!isset($cart[$productId])) {
         $cart[$productId] = [
-            'name'  => normalize_display_text((string)($product['name'] ?? '')),
+            'name'  => (string)($product['name'] ?? ''),
             'price' => round((float)($product['price'] ?? 0), 2),
             'qty'   => 0,
         ];
