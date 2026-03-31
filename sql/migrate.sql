@@ -1,7 +1,3 @@
--- MeowMart Migration Script
--- Run this if you already imported meowmart.sql before newer features were added.
--- Usage: mysql -u root -p meowmart < sql/migrate.sql
-
 USE meowmart;
 
 ALTER TABLE users

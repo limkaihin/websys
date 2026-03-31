@@ -1,6 +1,3 @@
--- MeowMart Database Schema
--- Run: mysql -u root -p < sql/meowmart.sql
-
 DROP DATABASE IF EXISTS meowmart;
 CREATE DATABASE meowmart CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE meowmart;
@@ -21,7 +18,7 @@ CREATE TABLE users (
     created_at    TIMESTAMP        DEFAULT CURRENT_TIMESTAMP
 );
 
--- ─── PRODUCTS ────────────────────────────────────────────────────────────────
+*products*
 CREATE TABLE products (
     id          INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(200)   NOT NULL,
@@ -32,7 +29,7 @@ CREATE TABLE products (
     created_at  TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
--- ─── BLOG POSTS ──────────────────────────────────────────────────────────────
+*blog_posts*
 CREATE TABLE blog_posts (
     id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     title      VARCHAR(255)   NOT NULL,
@@ -43,7 +40,7 @@ CREATE TABLE blog_posts (
     created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
--- ─── ORDERS ──────────────────────────────────────────────────────────────────
+*orders*
 CREATE TABLE orders (
     id                INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     user_id           INT UNSIGNED   DEFAULT NULL,
@@ -61,7 +58,7 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- ─── ORDER ITEMS ─────────────────────────────────────────────────────────────
+*order_items*
 CREATE TABLE order_items (
     id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     order_id   INT UNSIGNED   NOT NULL,
@@ -72,8 +69,7 @@ CREATE TABLE order_items (
     FOREIGN KEY (order_id)   REFERENCES orders(id)   ON DELETE CASCADE,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
 );
-
--- ─── CONTACT MESSAGES ────────────────────────────────────────────────────────
+*contact_messages*
 CREATE TABLE contact_messages (
     id         INT UNSIGNED   AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(120)   NOT NULL,
@@ -84,19 +80,8 @@ CREATE TABLE contact_messages (
     created_at TIMESTAMP      DEFAULT CURRENT_TIMESTAMP
 );
 
--- ─── DEMO USERS ──────────────────────────────────────────────────────────────
--- Password for both: Admin123! and User123! (bcrypt hash of "password" for demo)
--- Admin password: Admin123!
-INSERT INTO users (name, email, cat_name, password, role) VALUES
-('MeowMart Admin', 'admin@meowmart.test', 'Whiskers',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
 
--- Member password: User123!
-INSERT INTO users (name, email, cat_name, password, role) VALUES
-('Sarah Tan', 'member@meowmart.test', 'Mochi',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'member');
-
--- ─── DEMO PRODUCTS ───────────────────────────────────────────────────────────
+*products that can be used*
 INSERT INTO products (name, category, price, description, is_featured) VALUES
 ('Grain-Free Salmon Pate for Adult Cats',   'Food',        14.90, 'Premium grain-free wet food packed with real salmon. Rich in omega-3, gentle on digestion. 400g per can.', 1),
 ('Ultra Clumping Lavender Cat Litter 8kg',  'Litter',      22.50, 'Superior clumping formula with natural lavender scent. Low dust, easy to scoop, long-lasting freshness.', 1),
@@ -114,7 +99,7 @@ INSERT INTO products (name, category, price, description, is_featured) VALUES
 ('Catnip & Silver-vine Crinkle Balls',      'Toys',         8.90, 'Crinkle balls infused with catnip and silver vine. Lightweight, rattle inside, safe for solo play.', 0),
 ('Waterproof Sailor Raincoat - S/M/L',      'Apparel',     24.90, 'Lightweight waterproof raincoat with hood and velcro fastenings. Reflective strip for night walks.', 0);
 
--- ─── DEMO BLOG POSTS ─────────────────────────────────────────────────────────
+*example of blogpost*
 INSERT INTO blog_posts (title, tag, author, excerpt, content) VALUES
 (
   'The Ultimate Guide to Feeding Your Cat a Balanced Diet in 2025',
@@ -182,9 +167,6 @@ Always end every grooming session with play or treats to build a positive associ
 -- ─────────────────────────────────────────────────────────────────────────────
 SELECT 'MeowMart database installed successfully.' AS status;
 
--- ─── SESSION DATA (Zebra_Session - Open Source Project #5) ───────────────────
--- This table is auto-created by Zebra_Session at runtime, but we include
--- it here so a fresh import is fully self-contained.
 CREATE TABLE IF NOT EXISTS `session_data` (
     `session_id`      VARCHAR(128)     NOT NULL,
     `session_data`    BLOB             NOT NULL,
