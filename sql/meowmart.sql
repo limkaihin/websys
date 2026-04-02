@@ -99,7 +99,7 @@ INSERT INTO products (name, category, price, description, is_featured) VALUES
 ('Catnip & Silver-vine Crinkle Balls',      'Toys',         8.90, 'Crinkle balls infused with catnip and silver vine. Lightweight, rattle inside, safe for solo play.', 0),
 ('Waterproof Sailor Raincoat - S/M/L',      'Apparel',     24.90, 'Lightweight waterproof raincoat with hood and velcro fastenings. Reflective strip for night walks.', 0);
 
-*example of blogpost*
+*example of blogpost* 
 INSERT INTO blog_posts (title, tag, author, excerpt, content) VALUES
 (
   'The Ultimate Guide to Feeding Your Cat a Balanced Diet in 2025',
